@@ -1,9 +1,10 @@
-import { Inter } from "next/font/google";
+import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 import { connectToDb } from "@/lib/mongoConnection";
 import Navbar from "@/components/shared/Navbar";
+import { Flip, ToastContainer } from "react-toastify";
 
-const inter = Inter({
+const notosans = Noto_Sans({
   subsets: ["latin"],
 });
 
@@ -17,13 +18,27 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${inter.className} bg-slate-950 text-white`}
+        className={`${notosans.className} bg-slate-950 text-white`}
         suppressHydrationWarning
       >
         <header className="bg-black">
           <Navbar />
         </header>
         <main className="container mx-auto px-4">{children}</main>
+        {/* React toast container */}
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+          transition={Flip}
+        />
       </body>
     </html>
   );
