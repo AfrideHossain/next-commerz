@@ -89,3 +89,20 @@ export async function getAllProducts() {
     return { success: false, message: "Failed to fetch products" };
   }
 }
+
+// get a product
+export async function getAProduct(id) {
+  try {
+    await connectToDb();
+    const productInfo = await Product.findById(id).lean();
+
+    if (!productInfo) {
+      throw new Error("Product not found");
+    }
+
+    return productInfo;
+  } catch (error) {
+    console.error("Error fetching product:", error.message);
+    throw new Error("Failed to fetch product");
+  }
+}
