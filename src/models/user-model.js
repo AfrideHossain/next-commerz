@@ -1,4 +1,6 @@
+
 import mongoose from "mongoose";
+import { Product } from "./product-model";
 
 const userSchema = new mongoose.Schema(
   {
@@ -20,6 +22,20 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "user",
     },
+    cart: [
+      {
+        productId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: Product.modelName, // Reference to the Product model
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          default: 1,
+          min: 1,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

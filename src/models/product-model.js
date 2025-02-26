@@ -25,7 +25,12 @@ const productSchema = new mongoose.Schema({
     },
     image: {
         type: String,
+    },
+    tags: {
+        type: [String],
     }
-})
+},
+{ timestamps: true }
+)
 
 export const Product = mongoose.models?.Product || mongoose.model("Product", productSchema)

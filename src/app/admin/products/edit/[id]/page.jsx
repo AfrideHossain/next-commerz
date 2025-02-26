@@ -1,20 +1,49 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { addProduct } from "@/app/actions/products";
 import { toast, Zoom } from "react-toastify";
 import Loader from "@/components/shared/Loader/Loader";
+import { editAProduct, getAProduct } from "@/app/actions/products";
 
-export default function EditProduct() {
+export default function EditProduct({ params }) {
+  const { id : productId } = React.use(params);
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState(null);
+  const [productInfo, setProductInfo] = useState({
+    name: "",
+    category: "",
+    price: "",
+    stock: "",
+    discountPrice: "",
+    description: "",
+    image: "",
+  });
 
+  // Fetch product information from server
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setLoading(true);
+      try {
+        const productResponse = await getAProduct(productId);
+        if (productResponse) {
+          setProductInfo(productResponse);
+          setPreview(productResponse.image);
+        }
+      } catch (error) {
+        toast.error("Failed to fetch product details");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProduct();
+  }, [productId]);
+
+  // Handle Image Preview
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     const maxSize = 2 * 1024 * 1024;
     if (file) {
-      // setImage(file);
       if (file.size > maxSize) {
         toast.error("File size exceeds 2MB!");
         return;
@@ -23,42 +52,31 @@ export default function EditProduct() {
     }
   };
 
+  // Handle form submission
   const onSubmitHandler = async (event) => {
     event.preventDefault();
     setLoading(true);
-    const form = event.currentTarget;
 
     try {
-      const formData = new FormData(form);
-      const response = await addProduct(formData);
+      const formData = new FormData(event.target);
+      formData.append("id", productId); // Ensure ID is sent
+
+      const response = await editAProduct(formData);
       if (response.success) {
         toast.success(`${response.message}`, { transition: Zoom });
-
-        // Reset form and image preview
-        form.reset();
-        setPreview(null);
-        setLoading(false);
       } else {
         toast.error(`${response.message}`);
-
-        // Reset form and image preview
-        form.reset();
-        setPreview(null);
-        setLoading(false);
       }
     } catch (error) {
-      toast.error("Product registration failed");
-
-      // Reset form and image preview
-      form.reset();
-      setPreview(null);
+      toast.error("Failed to update product");
+    } finally {
       setLoading(false);
     }
   };
 
   return (
     <section className="relative flex items-center min-h-screen p-6">
-      {/* loading component */}
+      {/* Loading Component */}
       {loading && (
         <div className="absolute top-0 left-0 z-50 w-full min-h-screen bg-slate-950/50 flex justify-center items-center">
           <Loader />
@@ -72,7 +90,7 @@ export default function EditProduct() {
             <Image
               src={preview || "/assets/picture.png"}
               alt="Product Preview"
-              fill={true}
+              fill
               priority
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover rounded-md"
@@ -81,9 +99,9 @@ export default function EditProduct() {
         </div>
 
         {/* Form Section */}
-        <div className="">
+        <div>
           <h1 className="text-3xl font-bold text-center text-white mb-6">
-            Edit Product
+            Edit {productInfo.name}
           </h1>
           <form
             onSubmit={onSubmitHandler}
@@ -98,6 +116,7 @@ export default function EditProduct() {
                 name="name"
                 className="input input-bordered w-full"
                 placeholder="Enter product name"
+                defaultValue={productInfo.name}
                 required
               />
             </div>
@@ -109,6 +128,7 @@ export default function EditProduct() {
                 name="category"
                 className="select select-bordered w-full"
                 required
+                defaultValue={productInfo.category}
               >
                 <option value="">Select Category</option>
                 <option value="cookies">Cookies</option>
@@ -126,6 +146,7 @@ export default function EditProduct() {
                   name="price"
                   className="input input-bordered w-full"
                   placeholder="Enter price"
+                  defaultValue={productInfo.price}
                   required
                 />
               </div>
@@ -136,6 +157,7 @@ export default function EditProduct() {
                   name="stock"
                   className="input input-bordered w-full"
                   placeholder="Enter stock quantity"
+                  defaultValue={productInfo.stock}
                   required
                 />
               </div>
@@ -148,6 +170,7 @@ export default function EditProduct() {
                   name="discountPrice"
                   className="input input-bordered w-full"
                   placeholder="Enter discount price"
+                  defaultValue={productInfo.discountPrice}
                 />
               </div>
             </div>
@@ -159,10 +182,12 @@ export default function EditProduct() {
                 name="description"
                 className="textarea textarea-bordered w-full"
                 placeholder="Enter product description"
+                defaultValue={productInfo.description}
                 required
               />
             </div>
-            {/* upload image */}
+
+            {/* Upload Image */}
             <div className="form-control">
               <label className="label font-semibold">Upload Image</label>
               <input
@@ -177,7 +202,7 @@ export default function EditProduct() {
             {/* Submit Button */}
             <div className="flex justify-center">
               <button type="submit" className="btn btn-primary w-full">
-                Submit
+                Update Product
               </button>
             </div>
           </form>

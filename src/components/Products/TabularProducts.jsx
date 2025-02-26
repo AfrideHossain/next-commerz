@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import DeleteProductButton from "./DeleteProductButton";
 
 export default function TabularProducts({ products }) {
   return (
@@ -53,19 +54,19 @@ export default function TabularProducts({ products }) {
                       <div className="join">
                         <Link
                           href={`/products/${product._id}`}
-                          className="join-item btn btn-sm btn-outline btn-accent"
+                          className="join-item btn btn-sm btn-outline btn-ghost"
                         >
                           View
                         </Link>
                         <Link
                           href={`/admin/products/edit/${product._id}`}
-                          className="join-item btn btn-sm btn-outline btn-info"
+                          className="join-item btn btn-sm btn-outline btn-ghost"
                         >
                           Edit
                         </Link>
-                        <button className="join-item btn btn-sm btn-outline btn-error">
-                          Delete
-                        </button>
+                        <DeleteProductButton
+                          productId={product._id.toString()}
+                        />
                       </div>
                     </td>
                   </tr>

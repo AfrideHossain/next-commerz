@@ -1,11 +1,16 @@
 import { getAProduct } from "@/app/actions/products";
+import { auth } from "@/auth";
+import AddToCartBtn from "@/components/Products/AddToCartBtn";
 import Image from "next/image";
 import { BsStarFill, BsCartPlus, BsTruck, BsCreditCard } from "react-icons/bs";
 
 export default async function SingleProduct({ params }) {
+  // get the session
+  const session = await auth();
   const { id } = await params;
   const product = await getAProduct(id);
-  console.log(product);
+  // Console logging the product obj for debugging purpose only.
+  // console.log(product);
 
   if (!product) {
     return (
@@ -104,10 +109,10 @@ export default async function SingleProduct({ params }) {
 
           {/* Action Buttons */}
           <div className="flex justify-end gap-4 mt-6">
-            <button className="btn btn-primary">
-              <BsCartPlus className="w-5 h-5" />
-              Add to Cart
-            </button>
+            <AddToCartBtn
+              productId={`${product._id}`}
+              userEmail={session.user.email}
+            />
             {/* <button className="flex-1 px-6 py-3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-md transition duration-300">
               Buy Now
             </button> */}
