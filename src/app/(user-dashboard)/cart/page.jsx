@@ -9,6 +9,7 @@ import {
 } from "@/app/actions/cartActions";
 import { useSession } from "next-auth/react";
 import Loader from "@/components/shared/Loader/Loader";
+import { toast } from "react-toastify";
 
 export default function CartPage() {
   const [cart, setCart] = useState([]);
@@ -34,27 +35,42 @@ export default function CartPage() {
       .catch((error) => console.error("Error fetching cart:", error))
       .finally(() => setLoading(false));
   }, [userEmail]); // Depend only on `userEmail`
+  
+  // Async function for handling product's quantity update
+  async function handleUpdate(productId, newQuantity) {
+    if (newQuantity < 1) return;
+    setLoading(true);
+    try {
+      const res = await updateCart({
+        userEmail,
+        productId,
+        quantity: newQuantity,
+      });
+      if (res.success) {
+        toast.success("Cart Updated")
+        setCart((prev) =>
+          prev.map((item) =>
+            item.productId === productId
+              ? { ...item, quantity: newQuantity }
+              : item
+          )
+        );
+      } else {
+        toast.error("Cart not updated");
+      }
+    } catch (error) {
+      console.error(error.message);
+    } finally {
+      setLoading(false)
+    }
+  }
 
-  // async function handleUpdate(productId, newQuantity) {
-  //   if (newQuantity < 1) return;
-  //   setLoading(true);
-  //   await updateCart({ userEmail, productId, quantity: newQuantity });
-  //   setCart((prev) =>
-  //     prev.map((item) =>
-  //       item.productId._id === productId
-  //         ? { ...item, quantity: newQuantity }
-  //         : item
-  //     )
-  //   );
-  //   setLoading(false);
-  // }
-
-  // async function handleRemove(productId) {
-  //   setLoading(true);
-  //   await removeFromCart({ userEmail, productId });
-  //   setCart((prev) => prev.filter((item) => item.productId._id !== productId));
-  //   setLoading(false);
-  // }
+  async function handleRemove(productId) {
+    setLoading(true);
+    await removeFromCart({ userEmail, productId });
+    setCart((prev) => prev.filter((item) => item.productId !== productId));
+    setLoading(false);
+  }
 
   // async function handleCheckout() {
   //   setLoading(true);
@@ -101,9 +117,9 @@ export default function CartPage() {
               <p className="text-sm text-gray-400">Price: ${item.price}</p>
               <div className="flex items-center space-x-2 mt-2">
                 <button
-                  // onClick={() =>
-                  //   handleUpdate(item.productId._id, item.quantity - 1)
-                  // }
+                  onClick={() =>
+                    handleUpdate(item.productId, item.quantity - 1)
+                  }
                   className="bg-gray-700 text-white px-2 py-1 rounded"
                   disabled={loading}
                 >
@@ -111,9 +127,9 @@ export default function CartPage() {
                 </button>
                 <span className="text-white">{item.quantity}</span>
                 <button
-                  // onClick={() =>
-                  //   handleUpdate(item.productId._id, item.quantity + 1)
-                  // }
+                  onClick={() =>
+                    handleUpdate(item.productId, item.quantity + 1)
+                  }
                   className="bg-gray-700 text-white px-2 py-1 rounded"
                   disabled={loading}
                 >
@@ -125,7 +141,7 @@ export default function CartPage() {
               </p>
             </div>
             <button
-              // onClick={() => handleRemove(item.productId._id)}
+              onClick={() => handleRemove(item.productId)}
               className="bg-red-500 px-3 py-1 text-white rounded"
               disabled={loading}
             >
