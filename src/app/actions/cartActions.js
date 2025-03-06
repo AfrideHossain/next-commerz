@@ -187,7 +187,7 @@ export async function removeFromCart({ userEmail, productId }) {
     //   productId: item.productId.toString(),
     //   _id: item._id.toString(),
     // }));
-
+    console.log(restOfCart);
     console.log("Cart updated successfully.");
     return {
       success: true,
