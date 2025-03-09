@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FaBox,
   FaShoppingCart,
@@ -10,10 +10,23 @@ import {
 } from "react-icons/fa";
 import { IoIosLogOut } from "react-icons/io";
 import Link from "next/link";
+import { getLenProductsUsersOrders } from "../actions/adminActions";
 
 export default function AdminDashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
+  const [statsLen, setStatsLen] = useState({
+    products: 0,
+    users: 0,
+    orders: 0,
+  });
+  useEffect(() => {
+    const getStatsLen = async () => {
+      const statsObj = await getLenProductsUsersOrders();
+      console.log(statsObj);
+      setStatsLen(statsObj);
+    };
+    getStatsLen();
+  }, []);
   return (
     <div className="flex min-h-screen bg-gray-900 text-white">
       {/* Sidebar */}
@@ -68,13 +81,21 @@ export default function AdminDashboard() {
 
         {/* Stats Section */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
-          <StatCard title="Total Products" value="1,234" icon={<FaBox />} />
+          <StatCard
+            title="Total Products"
+            value={statsLen.products}
+            icon={<FaBox />}
+          />
           <StatCard
             title="Total Orders"
-            value="567"
+            value={statsLen.orders}
             icon={<FaShoppingCart />}
           />
-          <StatCard title="Total Users" value="89" icon={<FaUsers />} />
+          <StatCard
+            title="Total Users"
+            value={statsLen.users}
+            icon={<FaUsers />}
+          />
           <StatCard title="Revenue" value="$45,678" icon={<FaDollarSign />} />
         </div>
 

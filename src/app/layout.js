@@ -24,7 +24,9 @@ export default async function RootLayout({ children }) {
         <header className="bg-black">
           <Navbar />
         </header>
-        <main className="container mx-auto px-4">{children}</main>
+        <main className="container mx-auto px-4">
+          {children}
+        </main>
         {/* React toast container */}
         <ToastContainer
           position="top-right"

@@ -3,6 +3,7 @@
 import cloudinary from "@/lib/cloudinary.config";
 import { connectToDb } from "@/lib/mongoConnection";
 import { Product } from "@/models/product-model";
+import mongoose from "mongoose";
 import { revalidatePath } from "next/cache";
 
 export async function addProduct(formData) {
@@ -177,8 +178,17 @@ export async function editAProduct(formData) {
 // Server action to delete a product by it's id
 export async function deleteAProduct(id) {
   try {
+    // connect to database
+    console.log("connecting to database...");
     await connectToDb();
+    const deleteRes = await Product.findByIdAndDelete(id);
+    console.log(deleteRes);
+    if (deleteRes) {
+      return true
+    } else {
+      throw new Error("Unable to delete the product.")
+    }
   } catch (error) {
-    console.log(error);
+    throw new Error(error);
   }
 }

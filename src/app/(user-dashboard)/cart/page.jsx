@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   getCart,
   updateCart,
@@ -14,13 +14,15 @@ import { toast } from "react-toastify";
 export default function CartPage() {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { data: session } = useSession();
-  const userEmail = session?.user?.email;
+  const { data: session, status } = useSession();
+  // const userEmail = session?.user?.email;
+  const userEmail = useMemo(() => session?.user?.email, [status]);
 
   useEffect(() => {
+    setLoading(true);
     if (!userEmail) {
       setLoading(false);
-      return;
+      return; //navigate to the home
     }
 
     getCart(userEmail)
@@ -35,7 +37,7 @@ export default function CartPage() {
       .catch((error) => console.error("Error fetching cart:", error))
       .finally(() => setLoading(false));
   }, [userEmail]); // Depend only on `userEmail`
-  
+
   // Async function for handling product's quantity update
   async function handleUpdate(productId, newQuantity) {
     if (newQuantity < 1) return;
@@ -47,7 +49,7 @@ export default function CartPage() {
         quantity: newQuantity,
       });
       if (res.success) {
-        toast.success("Cart Updated")
+        toast.success("Cart Updated");
         setCart((prev) =>
           prev.map((item) =>
             item.productId === productId
@@ -61,15 +63,28 @@ export default function CartPage() {
     } catch (error) {
       console.error(error.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
   async function handleRemove(productId) {
     setLoading(true);
-    await removeFromCart({ userEmail, productId });
-    setCart((prev) => prev.filter((item) => item.productId !== productId));
-    setLoading(false);
+    // await removeFromCart({ userEmail, productId });
+    // setCart((prev) => prev.filter((item) => item.productId !== productId));
+    // setLoading(false);
+    try {
+      const res = await removeFromCart({ userEmail, productId });
+      if (res.success) {
+        toast.success("Product removed from cart");
+        setCart((prev) => prev.filter((item) => item.productId !== productId));
+      } else {
+        toast.error("Unable to remove product from cart");
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   // async function handleCheckout() {
@@ -79,6 +94,7 @@ export default function CartPage() {
   //   setLoading(false);
   //   alert("Checkout successful! 🎉");
   // }
+  // TODO: Checkout functionality here...
 
   if (loading) {
     return (
@@ -89,8 +105,10 @@ export default function CartPage() {
   }
   if (!userEmail) {
     return (
-      <div className="text-center text-red-500">
-        Please log in to view your cart.
+      <div className="min-h-screen flex justify-center items-center">
+        <div className="text-xl font-medium text-center text-red-500">
+          Please log in to view cart.
+        </div>
       </div>
     );
   }

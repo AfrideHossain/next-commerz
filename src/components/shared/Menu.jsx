@@ -1,3 +1,4 @@
+import { cn } from "@/utils/cn";
 import Link from "next/link";
 
 const pubilc_links = [
@@ -14,13 +15,15 @@ const pubilc_links = [
     path: "/products",
   },
 ];
-export default function Menu() {
+export default function Menu({ className }) {
   return (
     <>
-      <ul className="flex gap-10 list-none">
+      <ul className={cn(className)}>
         {pubilc_links.map((link) => (
           <li key={link.title}>
-            <Link href={link.path} className="font-medium">{link.title}</Link>
+            <Link href={link.path} className="font-medium">
+              {link.title}
+            </Link>
           </li>
         ))}
       </ul>
