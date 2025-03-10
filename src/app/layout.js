@@ -1,10 +1,11 @@
-import { Noto_Sans } from "next/font/google";
+// import { Noto_Sans } from "next/font/google";
+import { Jost } from "next/font/google";
 import "./globals.css";
 import { connectToDb } from "@/lib/mongoConnection";
 import Navbar from "@/components/shared/Navbar";
 import { Flip, ToastContainer } from "react-toastify";
 
-const notosans = Noto_Sans({
+const jost = Jost({
   subsets: ["latin"],
 });
 
@@ -18,7 +19,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${notosans.className} bg-slate-950 text-white`}
+        className={`${jost.className} bg-slate-950 text-white`}
         suppressHydrationWarning
       >
         <header className="bg-black">

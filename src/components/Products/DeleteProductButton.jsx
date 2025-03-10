@@ -3,8 +3,9 @@
 import React from "react";
 import Swal from "sweetalert2";
 import { deleteAProduct } from "@/app/actions/products";
+import { cn } from "@/utils/cn";
 
-export default function DeleteProductButton({ productId }) {
+export default function DeleteProductButton({ classname, productId }) {
   // const {productId} = React.use(params)
   // handle delete button
   const handleDeleteOperation = async () => {
@@ -40,10 +41,7 @@ export default function DeleteProductButton({ productId }) {
   };
   return (
     <>
-      <button
-        onClick={handleDeleteOperation}
-        className="join-item btn btn-sm btn-outline btn-ghost"
-      >
+      <button onClick={handleDeleteOperation} className={cn(classname)}>
         Delete
       </button>
     </>
