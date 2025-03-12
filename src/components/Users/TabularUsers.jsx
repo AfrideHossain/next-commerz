@@ -65,9 +65,12 @@ export default function TabularUsers({ users }) {
                   </td>
                   <td>
                     <div className="join">
-                      <button className="btn btn-sm btn-ghost text-success join-item">
+                      <Link
+                        href={`./users/${user._id.toString()}`}
+                        className="btn btn-sm btn-ghost text-success join-item"
+                      >
                         View
-                      </button>
+                      </Link>
                       <button className="btn btn-sm btn-ghost text-info join-item">
                         Edit
                       </button>

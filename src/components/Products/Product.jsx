@@ -1,14 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { FaTags, } from "react-icons/fa";
+import { FaTags } from "react-icons/fa";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 
 export default function Product({ product }) {
-
   return (
     <Link
       href={`/products/${product._id}`}
-      className="card card-compact bg-base-100 shadow-xl rounded-lg md:rounded-2xl transition-transform transform hover:scale-105"
+      className="card card-compact bg-base-300 shadow-xl rounded-lg md:rounded-2xl transition-transform transform hover:scale-105"
     >
       {/* Product Image */}
       <figure className="relative h-24 md:h-44">

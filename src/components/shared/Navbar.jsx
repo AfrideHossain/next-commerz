@@ -31,7 +31,7 @@ export default async function Navbar() {
           </div>
           <Menu
             className={
-              "menu min-h-screen dropdown-content bg-base-200 rounded-box z-1 mt-3 w-56 shadow"
+              "menu min-h-screen dropdown-content bg-base-200 rounded-box z-50 mt-3 w-56 shadow"
             }
           />
         </div>
@@ -113,13 +113,12 @@ export default async function Navbar() {
               </div>
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                className="menu menu-sm dropdown-content bg-base-300 rounded-box z-50 mt-3 w-52 p-2 shadow-xl"
               >
                 <li>
-                  <a className="justify-between">
+                  <Link href={"/my-profile"} className="justify-between">
                     Profile
-                    <span className="badge">New</span>
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   {session?.user.role === "admin" ? (

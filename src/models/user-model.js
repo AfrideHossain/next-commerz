@@ -1,4 +1,3 @@
-
 import mongoose from "mongoose";
 import { Product } from "./product-model";
 
@@ -11,6 +10,7 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
+      unique: true,
     },
     password: {
       type: String,

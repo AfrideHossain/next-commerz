@@ -19,7 +19,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${jost.className} bg-slate-950 text-white`}
+        className={`${jost.className} text-white`}
         suppressHydrationWarning
       >
         <header className="bg-black">
