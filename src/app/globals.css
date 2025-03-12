@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "daisyui";
 
 @plugin "daisyui/theme" {
   name: "thenewgreeny";
@@ -27,9 +26,9 @@
   --color-warning-content: oklch(26% 0.079 36.259);
   --color-error: oklch(70% 0.191 22.216);
   --color-error-content: oklch(25% 0.092 26.042);
-  --radius-selector: 0.25rem;
-  --radius-field: 1rem;
-  --radius-box: 1rem;
+  --radius-selector: 0.5rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
@@ -39,5 +38,5 @@
 
 .glitch-static {
   position: relative;
-  text-shadow: 2px 2px 0 rgb(0, 225, 255), -2px -2px 0 rgb(255, 0, 0); /* Create offset text shadows */
+  text-shadow: 2px 2px 0 rgb(0, 225, 255), -2px -2px 0 rgb(255, 0, 0);
 }
