@@ -22,6 +22,52 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "user",
     },
+    phone: {
+      type: String,
+      default: "",
+    },
+    nid: {
+      type: String,
+      default: "",
+    },
+    address: {
+      permanent: {
+        city: {
+          type: String,
+          default: "",
+        },
+        district: {
+          type: String,
+          default: "",
+        },
+        division: {
+          type: String,
+          default: "",
+        },
+        zip: {
+          type: String,
+          default: "",
+        },
+      },
+      shipping: {
+        city: {
+          type: String,
+          default: "",
+        },
+        district: {
+          type: String,
+          default: "",
+        },
+        division: {
+          type: String,
+          default: "",
+        },
+        zip: {
+          type: String,
+          default: "",
+        },
+      },
+    },
     cart: [
       {
         productId: {

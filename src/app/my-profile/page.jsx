@@ -3,15 +3,15 @@ import React from "react";
 import { getUserById } from "../actions/userAction";
 import Image from "next/image";
 import Link from "next/link";
-import { LuPencil, LuPencilLine } from "react-icons/lu";
+import { LuPencil } from "react-icons/lu";
 
 export default async function MyProfile() {
   const session = await auth();
   const response = await getUserById(session?.user.id);
   return (
-    <section className="min-h-[calc(100vh-64px)]">
+    <>
       {/* Profile wrapper */}
-      <div className="rounded-lg mt-6 p-4 bg-gray-800">
+      <div className="rounded-lg p-4 bg-gray-800">
         <h1 className="text-xl font-semibold mb-4">My Profile</h1>
         {/* Profile Head */}
         <div className="relative bg-accent p-6 rounded-lg flex gap-10 items-center">
@@ -50,7 +50,120 @@ export default async function MyProfile() {
             </Link>
           </div>
         </div>
+        <div>
+          <p className="flex gap-4 items-center text-lg text-gray-400 py-4">
+            Basic information{" "}
+            <span className="border-b border-gray-400 grow"></span>
+          </p>
+
+          <div className="space-y-2">
+            <div className="flex gap-4">
+              <p>Name : </p> <p>{response?.user?.name}</p>
+            </div>
+            <div className="flex gap-4">
+              <p>Email : </p> <p>{response?.user?.email}</p>
+            </div>
+            <div className="flex gap-4">
+              <p>phone : </p>{" "}
+              <p>
+                {response?.user?.phone || (
+                  <span className="text-error">Not found</span>
+                )}
+              </p>
+            </div>
+            <div className="flex gap-4">
+              <p>NID : </p>{" "}
+              <p>
+                {response?.user?.nid || (
+                  <span className="text-error">Not found</span>
+                )}
+              </p>
+            </div>
+          </div>
+          {/* Address information */}
+          <p className="flex gap-4 items-center text-lg text-gray-400 py-4">
+            Addresses <span className="border-b border-gray-400 grow"></span>
+          </p>
+          <div className="flex gap-10">
+            {/* Permanent address  */}
+            <div className="space-y-2 grow p-3 rounded-xl shadow-lg bg-neutral">
+              <p className="text-gray-400 border-b border-gray-400 ">
+                Permanent Address
+              </p>
+              <div className="flex gap-4">
+                <p>City : </p>{" "}
+                <p>
+                  {response?.user?.address?.permanent?.city || (
+                    <span className="text-error">Not found</span>
+                  )}
+                </p>
+              </div>
+              <div className="flex gap-4">
+                <p>District : </p>{" "}
+                <p>
+                  {response?.user?.address?.permanent?.district || (
+                    <span className="text-error">Not found</span>
+                  )}
+                </p>
+              </div>
+              <div className="flex gap-4">
+                <p>Division : </p>{" "}
+                <p>
+                  {response?.user?.address?.permanent?.division || (
+                    <span className="text-error">Not found</span>
+                  )}
+                </p>
+              </div>
+              <div className="flex gap-4">
+                <p>Zip Code : </p>{" "}
+                <p>
+                  {response?.user?.address?.permanent?.zip || (
+                    <span className="text-error">Not found</span>
+                  )}
+                </p>
+              </div>
+            </div>
+            {/* Shipping address  */}
+            <div className="space-y-2 grow p-3 rounded-xl shadow-lg bg-neutral">
+              <p className="text-gray-400 border-b border-gray-400 ">
+                Shipping Address
+              </p>
+              <div className="flex gap-4">
+                <p>City : </p>{" "}
+                <p>
+                  {response?.user?.address?.shipping?.city || (
+                    <span className="text-error">Not found</span>
+                  )}
+                </p>
+              </div>
+              <div className="flex gap-4">
+                <p>District : </p>{" "}
+                <p>
+                  {response?.user?.address?.shipping?.district || (
+                    <span className="text-error">Not found</span>
+                  )}
+                </p>
+              </div>
+              <div className="flex gap-4">
+                <p>Division : </p>{" "}
+                <p>
+                  {response?.user?.address?.shipping?.division || (
+                    <span className="text-error">Not found</span>
+                  )}
+                </p>
+              </div>
+              <div className="flex gap-4">
+                <p>Zip Code : </p>{" "}
+                <p>
+                  {response?.user?.address?.shipping?.zip || (
+                    <span className="text-error">Not found</span>
+                  )}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </section>
+    </>
   );
 }
