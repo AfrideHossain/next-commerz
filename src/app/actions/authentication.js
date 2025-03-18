@@ -23,66 +23,6 @@ async function hashPassword(password) {
   return await bcrypt.hash(password, 10);
 }
 
-// Main user registration function - temporarily disabled
-/* export async function registerUser(formData) {
-  console.log("Registering user...");
-
-  const name = formData.get("name");
-  const email = formData.get("email");
-  const password = formData.get("password");
-  const file = formData.get("dp_image");
-
-  try {
-    // Connect to database
-    await connectToDb();
-
-    // Check if user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      console.log("User already exists");
-      return { success: false, message: "User already exists" };
-    }
-    let uploadImageRes = null;
-    if (file) {
-      // Get the file path if it exists, or read the file if it's in memory
-      const filePath = file.path
-        ? file.path
-        : await file.arrayBuffer().then((buffer) => {
-            const tempFilePath = `/tmp/${file.name}`; // Create temporary path
-            return fs
-              .writeFile(tempFilePath, Buffer.from(buffer))
-              .then(() => tempFilePath);
-          });
-      uploadImageRes = await cloudinary.uploader.upload(
-        filePath,
-        "next-commerz-p1",
-        {
-          folder: "user_profile_images",
-        }
-      );
-    }
-
-    // Hash password
-    const hashedPass = await hashPassword(password);
-
-    // Create & save new user
-    const newUser = new User({
-      name,
-      email,
-      password: hashedPass,
-      image: uploadImageRes?.secure_url || "",
-    });
-    await newUser.save();
-
-    console.log("User registered successfully");
-    return { success: true, imageUrl };
-  } catch (error) {
-    console.error("Error:", error.message);
-    return { success: false, message: error.message };
-  }
-} */
-
-// temporary code
 export const registerUser = async (formData) => {
   try {
     // console.log("Registering user...");
