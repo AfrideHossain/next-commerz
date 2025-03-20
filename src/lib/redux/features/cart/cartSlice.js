@@ -26,8 +26,24 @@ export const cartSlice = createSlice({
     clear: (state) => {
       state.items = [];
     },
+    removeItem: (state, { payload }) => {
+      const newItems = state.items.filter(
+        (item) => item.productId !== payload.productId
+      );
+      state.items = newItems;
+    },
+    updateItem: (state, { payload }) => {
+      const existingIndex = state.items.findIndex(
+        (item) => item.productId === payload.productId
+      );
+      if (existingIndex >= 0) {
+        // Item exists, update quantity
+        state.items[existingIndex].quantity = payload.quantity;
+      }
+    },
   },
 });
 
-export const { setCart, add, clear } = cartSlice.actions;
+export const { setCart, add, clear, removeItem, updateItem } =
+  cartSlice.actions;
 export default cartSlice.reducer;

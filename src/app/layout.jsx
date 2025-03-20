@@ -2,12 +2,12 @@
 import { Jost } from "next/font/google";
 import "./globals.css";
 import { connectToDb } from "@/lib/mongoConnection";
-import Navbar from "@/components/shared/Navbar";
 import { Flip, ToastContainer } from "react-toastify";
 import ProviderRedux from "@/components/redux/ProviderRedux";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import { getCart } from "./actions/cartActions";
+import Navbar from "@/components/shared/Navbar/Navbar";
 
 const jost = Jost({
   subsets: ["latin"],

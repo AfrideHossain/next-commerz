@@ -1,15 +1,12 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import {
-  getCart,
-  updateCart,
-  removeFromCart,
-  clearCart,
-} from "@/app/actions/cartActions";
+import { getCart, updateCart, removeFromCart } from "@/app/actions/cartActions";
 import { useSession } from "next-auth/react";
 import Loader from "@/components/shared/Loader/Loader";
 import { toast } from "react-toastify";
+import { useAppDispatch } from "@/lib/redux/hooks/reduxHooks";
+import { removeItem, updateItem } from "@/lib/redux/features/cart/cartSlice";
 
 export default function CartPage() {
   const [cart, setCart] = useState([]);
@@ -17,6 +14,9 @@ export default function CartPage() {
   const { data: session, status } = useSession();
   // const userEmail = session?.user?.email;
   const userEmail = useMemo(() => session?.user?.email, [status]);
+
+  // dispatch from redux toolkit
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setLoading(true);
@@ -49,7 +49,7 @@ export default function CartPage() {
         quantity: newQuantity,
       });
       if (res.success) {
-        toast.success("Cart Updated");
+        dispatch(updateItem({ productId, quantity: newQuantity }));
         setCart((prev) =>
           prev.map((item) =>
             item.productId === productId
@@ -57,6 +57,7 @@ export default function CartPage() {
               : item
           )
         );
+        toast.success("Cart Updated");
       } else {
         toast.error("Cart not updated");
       }
@@ -75,8 +76,9 @@ export default function CartPage() {
     try {
       const res = await removeFromCart({ userEmail, productId });
       if (res.success) {
-        toast.success("Product removed from cart");
+        dispatch(removeItem({ productId }));
         setCart((prev) => prev.filter((item) => item.productId !== productId));
+        toast.success("Product removed from cart");
       } else {
         toast.error("Unable to remove product from cart");
       }
