@@ -110,7 +110,8 @@ export default async function SingleProduct({ params }) {
           {/* Action Buttons */}
           <div className="flex justify-end gap-4 mt-6">
             <AddToCartBtn
-              productId={`${product._id}`}
+              // productId={`${product._id}`}
+              product={JSON.stringify(product)}
               userEmail={session.user.email}
             />
             {/* <button className="flex-1 px-6 py-3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-md transition duration-300">

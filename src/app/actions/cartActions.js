@@ -43,7 +43,11 @@ export async function addToCart({ userEmail, productId, quantity = 1 }) {
 
     // update user and return
     await User.updateOne({ email: userEmail }, { $set: { cart: user.cart } });
-    return { success: true, message: "Added to cart" };
+    return {
+      success: true,
+      message: "Added to cart",
+      // cart: JSON.stringify(user.cart),
+    };
   } catch (error) {
     // console.log("got a error from addToCart server action => ", error);
     return { success: false, message: "Something went wrong", error };

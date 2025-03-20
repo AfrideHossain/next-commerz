@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import Image from "next/image";
 import Form from "next/form";
 import { logoutUser } from "@/app/actions/authentication";
+import LogoutBtn from "../authentication/LogoutBtn";
 
 export default async function Navbar() {
   const session = await auth();
@@ -42,10 +43,7 @@ export default async function Navbar() {
       </div>
       <div className="navbar-end gap-4">
         {!session?.user ? (
-          <Link
-            href={"/login"}
-            className="py-3 px-8 font-semibold text-white bg-emerald-600 hover:bg-emerald-700 duration-500 rounded-sm"
-          >
+          <Link href={"/login"} className="btn btn-primary">
             Sign in
           </Link>
         ) : (
@@ -128,9 +126,10 @@ export default async function Navbar() {
                   )}
                 </li>
                 <li>
-                  <Form action={logoutUser}>
+                  {/* <Form action={logoutUser}>
                     <button type="submit">Logout</button>
-                  </Form>
+                  </Form> */}
+                  <LogoutBtn />
                 </li>
               </ul>
             </div>

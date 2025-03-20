@@ -26,8 +26,6 @@ export default async function RootLayout({ children }) {
 
   if (getCartRes.success) {
     initialCart = getCartRes.cart;
-  } else {
-    initialCart = [];
   }
   // console.log("from main layout.js: ", session);
   return (

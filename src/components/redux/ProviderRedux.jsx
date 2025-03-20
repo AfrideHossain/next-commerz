@@ -1,6 +1,6 @@
 "use client";
 
-import { add } from "@/lib/redux/features/cart/cartSlice";
+import { setCart } from "@/lib/redux/features/cart/cartSlice";
 import { makeStore } from "@/lib/redux/store";
 import { useEffect, useRef } from "react";
 import { Provider } from "react-redux";
@@ -13,7 +13,7 @@ export default function ProviderRedux({ children, initialCart }) {
   }
   useEffect(() => {
     if (initialCart && storeRef.current) {
-      storeRef.current.dispatch(add(initialCart));
+      storeRef.current.dispatch(setCart(initialCart));
     }
   }, [initialCart]);
   return <Provider store={storeRef.current}>{children}</Provider>;

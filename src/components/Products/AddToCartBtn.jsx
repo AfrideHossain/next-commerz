@@ -4,9 +4,14 @@ import { useState, useCallback } from "react";
 import { addToCart } from "@/app/actions/cartActions";
 import { BsCartPlus } from "react-icons/bs";
 import { toast } from "react-toastify";
+import { useAppDispatch } from "@/lib/redux/hooks/reduxHooks";
+import { add } from "@/lib/redux/features/cart/cartSlice";
 
-export default function AddToCartBtn({ productId, userEmail }) {
+export default function AddToCartBtn({ product, userEmail }) {
   const [loading, setLoading] = useState(false);
+  const parsedProduct = JSON.parse([product]);
+  // the redux dispatch from hooks
+  const dispatch = useAppDispatch();
 
   // const handleAddToCart = useCallback(async () => {
   //   if (loading) return; // Prevent multiple clicks
@@ -36,9 +41,21 @@ export default function AddToCartBtn({ productId, userEmail }) {
 
     try {
       // call the addToCart Server action and wait
-      const res = await addToCart({ userEmail, productId, quantity: 1 });
+      const res = await addToCart({
+        userEmail,
+        productId: parsedProduct._id.toString(),
+        quantity: 1,
+      });
 
       if (res.success) {
+        dispatch(
+          add({
+            productId: parsedProduct._id,
+            name: parsedProduct.name,
+            price: parsedProduct.price,
+            quantity: 1,
+          })
+        );
         toast.success("Item added to cart! 🛒");
       } else {
         toast.error(res.message || "Failed to add item.");
