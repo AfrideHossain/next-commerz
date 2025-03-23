@@ -162,7 +162,7 @@ export default function CartPage() {
             </div>
             <button
               onClick={() => handleRemove(item.productId)}
-              className="bg-red-500 px-3 py-1 text-white rounded"
+              className="btn btn-error"
               disabled={loading}
             >
               Remove
@@ -173,7 +173,7 @@ export default function CartPage() {
 
       <button
         // onClick={handleCheckout}
-        className="bg-green-500 text-white px-4 py-2 rounded mt-6 w-full"
+        className="btn btn-primary w-full mt-4"
         disabled={loading}
       >
         {loading ? "Processing..." : "Checkout"}
