@@ -7,6 +7,7 @@ import Loader from "@/components/shared/Loader/Loader";
 import { toast } from "react-toastify";
 import { useAppDispatch } from "@/lib/redux/hooks/reduxHooks";
 import { removeItem, updateItem } from "@/lib/redux/features/cart/cartSlice";
+import Link from "next/link";
 
 export default function CartPage() {
   const [cart, setCart] = useState([]);
@@ -171,13 +172,14 @@ export default function CartPage() {
         ))}
       </div>
 
-      <button
+      <Link
+        href={"/checkout"}
         // onClick={handleCheckout}
         className="btn btn-primary w-full mt-4"
         disabled={loading}
       >
         {loading ? "Processing..." : "Checkout"}
-      </button>
+      </Link>
     </div>
   );
 }

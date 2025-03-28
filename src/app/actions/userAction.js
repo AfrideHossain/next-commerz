@@ -33,8 +33,6 @@ export async function getUserById(id) {
 
 // modify user
 export async function editUser(formData, id) {
-  console.log("User edit function called...");
-  console.log("Connecting to database...");
   try {
     await connectToDb();
     console.log("building new object from fromData...");
@@ -58,13 +56,13 @@ export async function editUser(formData, id) {
         },
       },
     };
-    console.log("new user object: ", newUserObj, { id });
+    // console.log("new user object: ", newUserObj, { id });
     const userUpdateRes = await User.findByIdAndUpdate(id, {
       $set: newUserObj,
     });
-    console.log("After update request: ", userUpdateRes);
+    // console.log("After update request: ", userUpdateRes);
     revalidatePath("/my-profile/edit");
-    return { success: true };
+    return { success: true, user: userUpdateRes };
   } catch (error) {
     console.log(error);
     throw new Error(error);

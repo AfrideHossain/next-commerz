@@ -12,7 +12,7 @@ export default function CartIcon() {
     setIsClient(true);
   }, []);
   const cartItems = useAppSelector((state) => state.cart.items);
-  console.log(cartItems);
+  // console.log(cartItems);
   return (
     <>
       <div className="dropdown dropdown-end">
