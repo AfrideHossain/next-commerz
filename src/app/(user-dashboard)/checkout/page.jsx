@@ -1,6 +1,7 @@
 import { getUserById } from "@/app/actions/userAction";
 import { auth } from "@/auth";
 import CartDetails from "@/components/checkout/CartDetails";
+import CheckOutForm from "@/components/checkout/CheckOutForm";
 import { PiHandCoinsLight } from "react-icons/pi";
 
 export default async function CheckOutPage() {
@@ -34,84 +35,8 @@ export default async function CheckOutPage() {
               <p className="label font-semibold tracking-widest uppercase">
                 Shipping
               </p>
-              <form className="space-y-3">
-                <div>
-                  <label className="text-sm text-neutral-400">Full Name</label>
-                  <input
-                    type="text"
-                    className="input w-full"
-                    placeholder="Full name"
-                    defaultValue={userInfo.name || ""}
-                  />
-                </div>
-                <div>
-                  <label className="text-sm text-neutral-400">
-                    Phone (+880)
-                  </label>
-                  <input
-                    type="text"
-                    className="input w-full"
-                    placeholder="Phone number"
-                    defaultValue={userInfo.phone || ""}
-                  />
-                </div>
-                <div className="grid grid-cols-3 gap-3">
-                  <div>
-                    <label className="text-sm text-neutral-400">City</label>
-                    <input
-                      type="text"
-                      className="input w-full"
-                      placeholder="City"
-                      defaultValue={userInfo.address.shipping.city || ""}
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm text-neutral-400">District</label>
-                    <input
-                      type="text"
-                      className="input w-full"
-                      placeholder="District"
-                      defaultValue={userInfo.address.shipping.district || ""}
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm text-neutral-400">Division</label>
-                    <input
-                      type="text"
-                      className="input w-full"
-                      placeholder="Division"
-                      defaultValue={userInfo.address.shipping.division || ""}
-                    />
-                  </div>
-                </div>
-                <div className="grid grid-cols-3 gap-3">
-                  <div>
-                    <label className="text-sm text-neutral-400">Zip Code</label>
-                    <input
-                      type="text"
-                      className="input w-full"
-                      placeholder="Zip Code"
-                      defaultValue={userInfo.address.shipping.zip || ""}
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm text-neutral-400">Country</label>
-                    <input
-                      type="text"
-                      className="input w-full"
-                      placeholder="Country"
-                      value="Bangladesh"
-                      disabled
-                    />
-                  </div>
-                  {/* <div className="flex items-end">
-                  <button className="btn btn-secondary w-full"> Save </button>
-                </div> */}
-                </div>
-              </form>
-              <div>
-                <button className="btn btn-primary w-full">Place Order</button>
-              </div>
+              {/* checkout form */}
+              <CheckOutForm userInfoString={JSON.stringify(userInfo)} />
             </div>
           </div>
           <div className="space-y-4">
