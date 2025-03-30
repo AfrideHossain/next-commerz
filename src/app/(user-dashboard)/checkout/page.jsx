@@ -36,7 +36,10 @@ export default async function CheckOutPage() {
                 Shipping
               </p>
               {/* checkout form */}
-              <CheckOutForm userInfoString={JSON.stringify(userInfo)} />
+              <CheckOutForm
+                userInfoString={JSON.stringify(userInfo)}
+                charges={{ shipping: 120 }}
+              />
             </div>
           </div>
           <div className="space-y-4">

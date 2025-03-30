@@ -1,13 +1,22 @@
 "use client";
 
-export default function CheckOutForm({ userInfoString }) {
+import { orderCheckout } from "@/app/actions/checkoutAction";
+import { useAppSelector } from "@/lib/redux/hooks/reduxHooks";
+
+export default function CheckOutForm({ userInfoString, charges }) {
   // parsed userInfo
   const userInfo = JSON.parse(userInfoString);
+  const cart = useAppSelector((state) => state.cart.items);
   const handlePlaceOrder = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
+    formData.append("userId", userInfo._id);
+    formData.append("charges", JSON.stringify(charges));
+    formData.append("cart", JSON.stringify(cart));
     const data = Object.fromEntries(formData.entries());
     console.log(data);
+    const placeOrderReq = await orderCheckout(formData);
+    // console.
   };
   return (
     <>
