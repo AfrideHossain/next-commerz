@@ -1,9 +1,13 @@
 "use client";
 
 import { orderCheckout } from "@/app/actions/checkoutAction";
-import { useAppSelector } from "@/lib/redux/hooks/reduxHooks";
+import { clear } from "@/lib/redux/features/cart/cartSlice";
+import { useAppSelector, useAppDispatch } from "@/lib/redux/hooks/reduxHooks";
+import Swal from "sweetalert2";
 
 export default function CheckOutForm({ userInfoString, charges }) {
+  // state dispatcher
+  const dispatch = useAppDispatch();
   // parsed userInfo
   const userInfo = JSON.parse(userInfoString);
   const cart = useAppSelector((state) => state.cart.items);
@@ -17,6 +21,19 @@ export default function CheckOutForm({ userInfoString, charges }) {
     console.log(data);
     const placeOrderReq = await orderCheckout(formData);
     // console.
+    if (placeOrderReq.success) {
+      Swal.fire({
+        title: "Yay!",
+        text: "You order has been placed.",
+        icon: "success",
+      }).then(() => dispatch(clear()));
+    } else {
+      Swal.fire({
+        title: "Oops!",
+        text: "Unable to place your order.",
+        icon: "error",
+      });
+    }
   };
   return (
     <>

@@ -10,6 +10,12 @@ import { removeItem, updateItem } from "@/lib/redux/features/cart/cartSlice";
 import Link from "next/link";
 
 export default function CartPage() {
+  // handle hydration
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(false);
   const { data: session, status } = useSession();
