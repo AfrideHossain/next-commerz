@@ -1,6 +1,7 @@
 "use server";
 
 import { connectToDb } from "@/lib/mongoConnection";
+import { Order } from "@/models/order-model";
 import { Product } from "@/models/product-model";
 import { User } from "@/models/user-model";
 import { createDynamicTrackingState } from "next/dist/server/app-render/dynamic-rendering";
@@ -23,7 +24,11 @@ export async function getLenProductsUsersOrders() {
       .lean();
     if (usersLen) statObj.users = usersLen.length;
 
-    //TODO: get order and set the length to statObj
+    //get orders and set the length to statObj
+    const ordersLen = await Order.find({ status: "pending" })
+      .select({ _id: 1 })
+      .lean();
+    if (ordersLen) statObj.orders = ordersLen.length;
     // console.log(statObj);
     return statObj;
   } catch (error) {

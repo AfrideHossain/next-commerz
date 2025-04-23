@@ -1,3 +1,4 @@
+import Link from "next/link";
 import ChangeOrderStatusBtn from "./ChangeOrderStatusBtn";
 
 export default function OrderTableComp({ orders }) {
@@ -61,6 +62,12 @@ export default function OrderTableComp({ orders }) {
                   </td>
                   <td>
                     <div className="join">
+                      <Link
+                        className="btn btn-sm btn-ghost text-warning join-item"
+                        href={`/admin/orders/${order._id}`}
+                      >
+                        view
+                      </Link>
                       <ChangeOrderStatusBtn
                         className="btn btn-sm btn-ghost text-info join-item"
                         status={"confirmed"}

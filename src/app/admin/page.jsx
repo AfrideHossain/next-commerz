@@ -1,31 +1,33 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  FaBox,
-  FaShoppingCart,
-  FaUsers,
-  FaDollarSign,
-  FaBars,
-} from "react-icons/fa";
-import { IoIosLogOut } from "react-icons/io";
-import Link from "next/link";
+import { FaBox, FaShoppingCart, FaUsers, FaDollarSign } from "react-icons/fa";
 import { getLenProductsUsersOrders } from "../actions/adminActions";
+import StatCard from "@/components/adminComps/StatCard";
+import { getAllOrders } from "../actions/orderAdminAction";
+import OrderTableComp from "@/components/orders/OrderTableComp";
 
 export default function AdminDashboard() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [statsLen, setStatsLen] = useState({
     products: 0,
     users: 0,
     orders: 0,
   });
+  const [orders, setOrders] = useState([]);
   useEffect(() => {
     const getStatsLen = async () => {
       const statsObj = await getLenProductsUsersOrders();
       // console.log(statsObj);
       setStatsLen(statsObj);
     };
+    const getOrders = async () => {
+      const ordersRes = await getAllOrders("pending");
+      if (ordersRes.success) {
+        setOrders(JSON.parse(ordersRes.data));
+      }
+    };
     getStatsLen();
+    getOrders();
   }, []);
   return (
     <>
@@ -50,7 +52,7 @@ export default function AdminDashboard() {
       </div>
       <div className="mt-10 bg-gray-800 p-6 rounded-lg">
         <h2 className="text-xl font-semibold mb-4">Recent Orders</h2>
-        <table className="w-full border-collapse">
+        {/* <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-gray-700">
               <th className="py-2">Order ID</th>
@@ -79,19 +81,20 @@ export default function AdminDashboard() {
               <td className="py-2 text-red-400">Cancelled</td>
             </tr>
           </tbody>
-        </table>
+        </table> */}
+        <OrderTableComp orders={orders} />
       </div>
     </>
   );
 }
 
-// Stat Card Component
-const StatCard = ({ title, value, icon }) => (
-  <div className="bg-gray-800 p-6 rounded-lg flex items-center gap-4">
-    <div className="text-yellow-400 text-3xl">{icon}</div>
-    <div>
-      <h3 className="text-gray-400 text-sm">{title}</h3>
-      <p className="text-2xl font-bold">{value}</p>
-    </div>
-  </div>
-);
+// // Stat Card Component
+// const StatCard = ({ title, value, icon }) => (
+//   <div className="bg-gray-800 p-6 rounded-lg flex items-center gap-4">
+//     <div className="text-yellow-400 text-3xl">{icon}</div>
+//     <div>
+//       <h3 className="text-gray-400 text-sm">{title}</h3>
+//       <p className="text-2xl font-bold">{value}</p>
+//     </div>
+//   </div>
+// );

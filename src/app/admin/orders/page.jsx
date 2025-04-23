@@ -5,9 +5,9 @@ export default async function AdminOrders() {
   let orders = [];
   const ordersReq = await getAllOrders();
   if (ordersReq.success) {
-    orders = ordersReq.data;
+    orders = JSON.parse(ordersReq.data);
   }
-  console.log(orders);
+  // console.log(orders);
   return (
     <div>
       <OrderTableComp orders={orders} />
