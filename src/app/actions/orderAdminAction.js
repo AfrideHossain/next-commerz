@@ -57,7 +57,7 @@ export async function changeOrderStatus(orderId, status) {
   console.log({ orderId, status });
   try {
     // connect to database
-    console.log("connecting to database...");
+    // console.log("connecting to database...");
     await connectToDb();
     // database operation to change status
     const changeStatusRes = await Order.findByIdAndUpdate(orderId, {
@@ -65,8 +65,9 @@ export async function changeOrderStatus(orderId, status) {
         status,
       },
     });
-    console.log(changeStatusRes);
+    // console.log(changeStatusRes);
     revalidatePath("/admin/orders");
+    revalidatePath(`/admin/orders/${orderId}`);
     return { success: true, msg: "Order status has been changed." };
   } catch (error) {
     console.log("Error from change order server action: ", error);
