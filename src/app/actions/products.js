@@ -8,9 +8,7 @@ import { revalidatePath } from "next/cache";
 
 export async function addProduct(formData) {
   try {
-    console.log("Connecting to db...");
     await connectToDb();
-    console.log("Connected to db");
 
     // get every field from form data
     const name = formData.get("name");
@@ -20,6 +18,10 @@ export async function addProduct(formData) {
     const stock = formData.get("stock");
     const discountPrice = formData.get("discountPrice");
     const productImage = formData.get("productImage");
+    const tags = formData.get("tags");
+
+    // split tags and make an array
+    const tagsArr = tags.split(/\s*,\s*/);
     // image url
     let imageUrl = "";
     //   upload Image to cloudinary
@@ -34,7 +36,6 @@ export async function addProduct(formData) {
         { folder: "next-commerz-products" }
       );
       if (!uploadResponse.secure_url) {
-        // console.error("Cloudinary upload failed, no secure_url returned");
         return { success: false, message: "Image upload failed" };
       }
 
@@ -44,6 +45,7 @@ export async function addProduct(formData) {
     // console.log({
     //   name,
     //   category,
+    //   tags: tagsArr,
     //   price,
     //   stock,
     //   discountPrice,
@@ -54,6 +56,7 @@ export async function addProduct(formData) {
     const newProduct = new Product({
       name,
       category,
+      tags: tagsArr,
       price,
       stock,
       discountPrice,
@@ -184,9 +187,10 @@ export async function deleteAProduct(id) {
     const deleteRes = await Product.findByIdAndDelete(id);
     console.log(deleteRes);
     if (deleteRes) {
-      return true
+      revalidatePath("/admin/products");
+      return true;
     } else {
-      throw new Error("Unable to delete the product.")
+      throw new Error("Unable to delete the product.");
     }
   } catch (error) {
     throw new Error(error);

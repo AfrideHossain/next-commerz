@@ -22,7 +22,7 @@ export default async function SingleProduct({ params }) {
 
   return (
     <section className="min-h-screen flex items-center justify-center py-10 px-5 text-white">
-      <div className="max-w-6xl w-full rounded-lg shadow-lg p-6 md:p-10 flex flex-col md:flex-row gap-8">
+      <div className="max-w-6xl w-full rounded-lg p-6 md:p-10 flex flex-col md:flex-row gap-8">
         {/* Left Side - Product Images */}
         <div className="w-full md:w-1/2 flex flex-col items-center">
           <Image

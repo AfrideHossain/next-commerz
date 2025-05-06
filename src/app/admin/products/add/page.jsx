@@ -1,24 +1,44 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { addProduct } from "@/app/actions/products";
 import { toast, Zoom } from "react-toastify";
 import Loader from "@/components/shared/Loader/Loader";
+import { getAvailableCategories } from "@/app/actions/categoriesAction";
 
 export default function AddProduct() {
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState(null);
+  const [categories, setCategories] = useState([]);
+
+  // fetch categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setLoading(true);
+      try {
+        const allCategoriesRes = await getAvailableCategories();
+        if (allCategoriesRes.success) {
+          setCategories(JSON.parse(allCategoriesRes.data));
+        }
+      } catch (error) {
+        console.log("unable to get categories");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    const maxSize = 2 * 1024 * 1024; 
+    const maxSize = 2 * 1024 * 1024;
     if (file) {
       // setImage(file);
-       if (file.size > maxSize) {
-         toast.error("File size exceeds 2MB!");
-         return;
-       }
+      if (file.size > maxSize) {
+        toast.error("File size exceeds 2MB!");
+        return;
+      }
       setPreview(URL.createObjectURL(file));
     }
   };
@@ -64,19 +84,23 @@ export default function AddProduct() {
           <Loader />
         </div>
       )}
-      <div className="bg-gray-900 rounded-lg shadow-lg w-full p-8 grid grid-cols-2 gap-8">
+      <div className="rounded-lg w-full p-8 grid grid-cols-2 gap-8">
         {/* Image Upload and Preview */}
         <div className="flex flex-col justify-center items-center gap-6 border-r border-gray-500 pr-8">
           <p className="text-xl font-semibold">Preview Image</p>
-          <div className="relative w-full h-full border-0 mb-5 rounded-md">
-            <Image
-              src={preview || "/assets/picture.png"}
-              alt="Product Preview"
-              fill={true}
-              priority
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover rounded-md"
-            />
+          <div className="relative flex justify-center items-center w-full aspect-[4/3] border mb-5 rounded-md">
+            {!preview ? (
+              <h2 className="text-3xl font-bold text-neutral">Product Image</h2>
+            ) : (
+              <Image
+                src={preview || "/assets/picture.png"}
+                alt="Product Preview"
+                fill={true}
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover rounded-md"
+              />
+            )}
           </div>
         </div>
 
@@ -111,10 +135,27 @@ export default function AddProduct() {
                 required
               >
                 <option value="">Select Category</option>
-                <option value="cookies">Cookies</option>
+                {/* <option value="cookies">Cookies</option>
                 <option value="brownies">Brownies</option>
-                <option value="cakes">Cakes</option>
+                <option value="cakes">Cakes</option> */}
+                {categories.length > 0 &&
+                  categories.map((category) => (
+                    <option key={category._id} value={category.name}>
+                      {category.name}
+                    </option>
+                  ))}
               </select>
+            </div>
+            {/* tags */}
+            <div>
+              <label className="label font-semibold">Tags</label>
+              <input
+                type="text"
+                name="tags"
+                className="input input-bordered w-full"
+                placeholder="Enter tags (separate by comma)"
+                required
+              />
             </div>
 
             {/* Price, Stock, and Discount Price */}

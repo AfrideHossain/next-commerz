@@ -6,7 +6,22 @@ import { LuPlus } from "react-icons/lu";
 export default function TabularProducts({ products }) {
   return (
     <>
-      {!products.length > 0 && "There is no products yet"}
+      {!products.length > 0 && (
+        <>
+          <div className="h-full flex flex-col gap-5 justify-center items-center">
+            <h1 className="text-3xl font-bold text-neutral">
+              There is not product yet.
+            </h1>
+            <Link
+              href={"./products/add"}
+              className="btn btn-ghost btn-outline rounded-full "
+            >
+              <LuPlus className="text-xl" />
+              Add New Product
+            </Link>
+          </div>
+        </>
+      )}
       {products.length > 0 && (
         <div className="mt-10 bg-gray-800 p-6 rounded-lg">
           <div className="mb-4 flex justify-between items-center">

@@ -67,7 +67,7 @@ export async function getCart(userEmail) {
 
     const user = await User.findOne({ email: userEmail }).populate({
       path: "cart.productId",
-      select: "name price", // Select only necessary fields
+      select: "name price discountPrice", // Select only necessary fields
     });
 
     if (!user || !user.cart) {
@@ -78,6 +78,7 @@ export async function getCart(userEmail) {
     const cart = user.cart.map((item) => ({
       productId: item.productId._id.toString(), // Convert ObjectId to string
       name: item.productId.name,
+      discountPrice: item.productId.discountPrice,
       price: item.productId.price,
       quantity: item.quantity,
     }));

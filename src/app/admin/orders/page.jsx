@@ -7,7 +7,7 @@ export default async function AdminOrders() {
   if (ordersReq.success) {
     orders = JSON.parse(ordersReq.data);
   }
-  // console.log(orders);
+  // console.log(orders[0].products);
   return (
     <div>
       <OrderTableComp orders={orders} />

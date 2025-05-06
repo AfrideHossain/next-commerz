@@ -9,13 +9,15 @@ import {
   FaDollarSign,
   FaBars,
 } from "react-icons/fa";
+import { MdOutlineCategory } from "react-icons/md";
+
 import { IoIosLogOut } from "react-icons/io";
 
 export default function AdminDashboardLayout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   return (
     <>
-      <div className="flex min-h-screen bg-gray-900 text-white">
+      <div className="flex min-h-screen text-white">
         {/* Sidebar */}
         <aside
           className={`bg-gray-800 p-5 w-64 space-y-6 ${
@@ -29,6 +31,12 @@ export default function AdminDashboardLayout({ children }) {
               className="flex items-center gap-3 p-2 hover:bg-gray-700 rounded-md"
             >
               <FaBox /> Products
+            </Link>
+            <Link
+              href="/admin/categories"
+              className="flex items-center gap-3 p-2 hover:bg-gray-700 rounded-md"
+            >
+              <MdOutlineCategory /> Categories
             </Link>
             <Link
               href="/admin/orders"

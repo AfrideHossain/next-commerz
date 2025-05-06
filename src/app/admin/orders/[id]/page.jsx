@@ -20,10 +20,10 @@ export default async function OrderDetailsAdmin({ params }) {
   }
 
   const subtotal = order.products.reduce(
-    (acc, item) => acc + item.productId.price * item.quantity,
+    (acc, item) => acc + item?.productId?.price * item?.quantity,
     0
   );
-  const total = subtotal + order.deliveryCharge;
+  const total = subtotal + order?.deliveryCharge;
 
   // change status handler
   const handleStatusChange = (newStatus) => {
@@ -34,7 +34,7 @@ export default async function OrderDetailsAdmin({ params }) {
     <div className="text-gray-200 p-6">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-6">
-          Order #{order._id.toString()}
+          Order #{order?._id.toString()}
         </h1>
 
         <div className="bg-gray-900 border border-gray-700 rounded-2xl p-6 space-y-6">
@@ -43,18 +43,18 @@ export default async function OrderDetailsAdmin({ params }) {
             <div>
               <p className="text-gray-400">Customer</p>
               <p className="text-lg font-medium text-white">
-                {order.userId.name}
+                {order?.userId?.name}
               </p>
-              <p className="text-sm text-gray-400">{order.userId.email}</p>
+              <p className="text-sm text-gray-400">{order?.userId?.email}</p>
             </div>
 
             {/* Status Display */}
             <span
               className={`px-3 py-1 rounded-full text-sm font-medium ${
-                statusColors[order.status]
+                statusColors[order?.status]
               }`}
             >
-              {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+              {order?.status.charAt(0).toUpperCase() + order?.status.slice(1)}
             </span>
           </div>
 
@@ -82,7 +82,7 @@ export default async function OrderDetailsAdmin({ params }) {
                       : "bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700"
                   }`}
                 status={status}
-                orderId={order._id.toString()}
+                orderId={order?._id.toString()}
               >
                 {status.charAt(0).toUpperCase() + status.slice(1)}
               </ChangeOrderStatusBtn>
@@ -93,26 +93,27 @@ export default async function OrderDetailsAdmin({ params }) {
           <div>
             <p className="text-sm text-gray-400">Shipping Address</p>
             <p className="text-sm text-gray-300">
-              {order.shipping.name}, {order.shipping.address.city},{" "}
-              {order.shipping.address.district},{" "}
-              {order.shipping.address.division} - {order.shipping.address.zip}
+              {order?.shipping?.name}, {order?.shipping.address?.city},{" "}
+              {order?.shipping?.address?.district},{" "}
+              {order?.shipping?.address?.division} -{" "}
+              {order?.shipping?.address?.zip}
             </p>
           </div>
 
           {/* Products */}
           <div className="divide-y divide-gray-800">
-            {order.products.map((item, i) => (
+            {order?.products.map((item, i) => (
               <div key={i} className="flex justify-between items-center py-4">
                 <div>
                   <p className="font-medium text-white">
-                    {item.productId.name}
+                    {item?.productId?.name}
                   </p>
                   <p className="text-sm text-gray-400">
-                    Qty: {item.quantity} x ${item.productId.price}
+                    Qty: {item?.quantity} x ${item?.productId?.price}
                   </p>
                 </div>
                 <p className="font-semibold text-gray-200">
-                  ${item.productId.price * item.quantity}
+                  ${item?.productId?.price * item?.quantity}
                 </p>
               </div>
             ))}
@@ -126,7 +127,7 @@ export default async function OrderDetailsAdmin({ params }) {
             </div>
             <div className="flex justify-between">
               <span>Delivery Charge</span>
-              <span>${order.deliveryCharge}</span>
+              <span>${order?.deliveryCharge}</span>
             </div>
             <div className="flex justify-between font-bold text-base text-white">
               <span>Total</span>
