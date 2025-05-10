@@ -15,7 +15,7 @@ export default function AddCategoryForm() {
     const fetchCategories = async () => {
       const res = await getMainCategories(); // You'll need to create this endpoint
       if (res.success) {
-        setParentCategories(JSON.parse(resx.categories));
+        setParentCategories(JSON.parse(res.categories));
       }
     };
     fetchCategories();

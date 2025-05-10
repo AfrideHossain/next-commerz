@@ -8,6 +8,7 @@ import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import { getCart } from "./actions/cartActions";
 import Navbar from "@/components/shared/Navbar/Navbar";
+import Footer from "@/components/shared/Footer/Footer";
 
 const jost = Jost({
   subsets: ["latin"],
@@ -37,7 +38,8 @@ export default async function RootLayout({ children }) {
             <header className="bg-black">
               <Navbar />
             </header>
-            <main className="container mx-auto px-4">{children}</main>
+            <main>{children}</main>
+            <Footer />
           </ProviderRedux>
         </SessionProvider>
         {/* React toast container */}

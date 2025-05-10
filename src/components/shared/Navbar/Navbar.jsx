@@ -35,7 +35,7 @@ export default async function Navbar() {
             }
           />
         </div>
-        <a className="btn btn-ghost text-xl">Watch Point</a>
+        <a className="btn btn-ghost text-xl">JADUR HAAT</a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <Menu className={"menu menu-horizontal px-1"} />

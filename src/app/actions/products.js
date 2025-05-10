@@ -85,10 +85,13 @@ export async function addProduct(formData) {
 }
 
 // get all products
-export async function getAllProducts() {
+/**
+ * @param {Number} limit
+ */
+export async function getAllProducts(limit = 0) {
   try {
     await connectToDb(); // Ensure the database is connected
-    const products = await Product.find().lean(); // Use `lean()` for better performance
+    const products = await Product.find().limit(limit).lean(); // Use `lean()` for better performance
     return { success: true, data: products };
   } catch (error) {
     console.error("Error fetching products:", error);
