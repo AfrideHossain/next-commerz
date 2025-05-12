@@ -22,7 +22,9 @@ export default function Product({ product }) {
 
       {/* Product Details */}
       <div className="card-body">
-        <h2 className="card-title text-sm font-semibold">{product.name}</h2>
+        <h2 className="card-title text-sm font-semibold">
+          {product.name.slice(0, 17)}...
+        </h2>
 
         {/* Category & Price */}
         <div className="flex flex-col md:flex-row justify-between text-sm text-gray-500 mt-2">

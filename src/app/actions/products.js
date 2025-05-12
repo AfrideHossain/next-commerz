@@ -199,3 +199,21 @@ export async function deleteAProduct(id) {
     throw new Error(error);
   }
 }
+
+// get all products
+/**
+ * @param {Number} limit
+ * @param {String} category
+ */
+export async function getProductsByCat(category, limit = 0) {
+  try {
+    console.log({ category });
+    await connectToDb(); // Ensure the database is connected
+    const products = await Product.find({ category }).limit(limit).lean(); // Use `lean()` for better performance
+    console.log("Products under getProductsByCat: ", products);
+    return { success: true, data: products };
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return { success: false, message: "Failed to fetch products" };
+  }
+}

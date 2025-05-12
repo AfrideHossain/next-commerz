@@ -146,3 +146,60 @@ export async function getMainCategories() {
     return [];
   }
 }
+
+/**
+ * Builds a tree of categories from a flat list.
+ * @param {Array} categories - Flat array of category objects.
+ * @returns {Array} Tree-structured category array.
+ */
+function buildCategoryTree(categories) {
+  const categoryMap = new Map();
+  const tree = [];
+
+  // Initialize map
+  categories.forEach((cat) =>
+    categoryMap.set(cat._id.toString(), { ...cat, children: [] })
+  );
+
+  // Build tree
+  for (const cat of categories) {
+    const parentId = cat.parent?.toString();
+    if (parentId && categoryMap.has(parentId)) {
+      categoryMap
+        .get(parentId)
+        .children.push(categoryMap.get(cat._id.toString()));
+    } else {
+      tree.push(categoryMap.get(cat._id.toString())); // top-level
+    }
+  }
+
+  return tree;
+}
+
+/**
+ * Fetch all categories and return them as a nested tree.
+ * @returns {Promise<{ success: boolean, msg: string, data?: Array }>}
+ */
+export async function getAllCategories() {
+  try {
+    await connectToDb();
+
+    // Fetch all categories
+    const allCategories = await Category.find().lean();
+
+    // Build tree structure
+    const tree = buildCategoryTree(allCategories);
+
+    return {
+      success: true,
+      msg: "Categories found",
+      data: JSON.stringify(tree),
+    };
+  } catch (error) {
+    console.error("Error from getAvailableCategories:", error);
+    return {
+      success: false,
+      msg: "Unable to retrieve categories",
+    };
+  }
+}

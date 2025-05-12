@@ -12,9 +12,9 @@ export default async function ProductsPage() {
 
   return (
     <section>
-      <h1 className="text-xl md:text-3xl font-bold text-center my-6">
+      {/* <h1 className="text-xl md:text-3xl font-bold text-center my-6">
         All Products
-      </h1>
+      </h1> */}
 
       {products.success && products.data.length > 0 ? (
         <Products products={products.data} />
