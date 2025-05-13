@@ -4,6 +4,7 @@ import Image from "next/image";
 import CartIcon from "./CartIcon";
 import Menu from "../Menu";
 import LogoutBtn from "@/components/authentication/LogoutBtn";
+import SearchBar from "@/components/search/SearchBar";
 
 export default async function Navbar() {
   const session = await auth();
@@ -41,6 +42,7 @@ export default async function Navbar() {
         <Menu className={"menu menu-horizontal px-1"} />
       </div>
       <div className="navbar-end gap-4">
+        <SearchBar className={"w-96"} />
         {!session?.user ? (
           <Link href={"/login"} className="btn btn-primary">
             Sign in

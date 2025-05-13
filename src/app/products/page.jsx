@@ -1,5 +1,6 @@
 import { getAllProducts } from "@/app/actions/products";
 import Products from "@/components/Products/Products";
+import SearchBar from "@/components/search/SearchBar";
 
 export default async function ProductsPage() {
   let products = { success: false, data: [] };
@@ -15,7 +16,7 @@ export default async function ProductsPage() {
       {/* <h1 className="text-xl md:text-3xl font-bold text-center my-6">
         All Products
       </h1> */}
-
+      <SearchBar />
       {products.success && products.data.length > 0 ? (
         <Products products={products.data} />
       ) : (
