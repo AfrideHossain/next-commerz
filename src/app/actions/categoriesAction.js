@@ -19,7 +19,7 @@ export async function registerACategory(formData) {
     await connectToDb();
 
     const newCategory = new Category({
-      name,
+      name: name.toLowerCase(),
       slug,
       description,
       parent,
@@ -80,7 +80,7 @@ export async function modifyACategory(formData) {
     // find by id and update
     const existingCategory = await Category.findById(categoryId);
     if (existingCategory) {
-      existingCategory.name = name;
+      existingCategory.name = name.toLowerCase();
       existingCategory.slug = slug;
       existingCategory.description = description;
 

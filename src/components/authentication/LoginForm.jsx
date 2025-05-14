@@ -68,6 +68,11 @@ export default function LoginForm() {
       </Form>
       <div>
         <p>
+          <Link href="/forget-password" className="text-blue-500">
+            Forgot my password
+          </Link>
+        </p>
+        <p>
           Don't have an account?{" "}
           <Link href="/registration" className="text-blue-500">
             Register now!
