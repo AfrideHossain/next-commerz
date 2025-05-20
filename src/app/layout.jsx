@@ -15,12 +15,15 @@ const jost = Jost({
 });
 
 export const metadata = {
-  title: "Next CommerZ",
-  description: "An e-commerce platform built with Next.js",
+  title: "Jadur Haat - Snag epic fashion that screams YOU",
+  description:
+    "Explore Jadur Haat’s curated fashion for ages 14-40. Snag bold, luxurious styles that scream YOU. Own the Vibe, Rule the Scene with trendy designs.",
+  keywords:
+    "Jadur Haat, fashion e-commerce Bangladesh, trendy clothing, luxury fashion, streetwear Bangladesh, formal attire, youth fashion, modern fashion, women’s clothing, men’s fashion, designer outfits, ethnic wear Bangladesh, chic streetwear, fashion accessories, trendy outfits Dhaka, online fashion store, curated fashion, fashion for teens, premium apparel",
 };
 
 export default async function RootLayout({ children }) {
-  await connectToDb();
+  // await connectToDb();
   const session = await auth();
   let initialCart = [];
   const getCartRes = await getCart(session?.user?.email);
@@ -35,7 +38,7 @@ export default async function RootLayout({ children }) {
         <SessionProvider session={session}>
           {/* wrap the whole app with redux provider */}
           <ProviderRedux initialCart={initialCart}>
-            <header className="bg-black">
+            <header className="w-full">
               <Navbar />
             </header>
             <main>{children}</main>

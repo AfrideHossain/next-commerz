@@ -8,6 +8,7 @@ import SearchBar from "@/components/search/SearchBar";
 
 export default async function Navbar() {
   const session = await auth();
+  console.log("session from navbar comp=> ", session);
 
   return (
     <div className="navbar h-16 bg-base-300 shadow-sm">
@@ -32,7 +33,7 @@ export default async function Navbar() {
           </div>
           <Menu
             className={
-              "menu min-h-screen dropdown-content bg-base-200 rounded-box z-50 mt-3 w-56 shadow"
+              "menu dropdown-content bg-base-200 rounded-box z-50 mt-3 w-56 shadow"
             }
           />
         </div>
@@ -42,7 +43,7 @@ export default async function Navbar() {
         <Menu className={"menu menu-horizontal px-1"} />
       </div>
       <div className="navbar-end gap-4">
-        <SearchBar className={"w-96"} />
+        {/* <SearchBar className={"w-96"} /> */}
         {!session?.user ? (
           <Link href={"/login"} className="btn btn-primary">
             Sign in

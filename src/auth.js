@@ -1,14 +1,15 @@
+// src/auth.js
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 
-import { User } from "./models/user-model";
 import bcrypt from "bcryptjs";
-import { authConfig } from "./auth.config";
+import { User } from "./models/user-model";
 import { connectToDb } from "./lib/mongoConnection";
+import { authConfig } from "./auth.config";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  ...authConfig,
+  ...authConfig, // bring in pages/session/callbacks (but override providers and callback logic here)
   providers: [
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -20,53 +21,51 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: {},
       },
       async authorize(credentials) {
-        if (credentials === null) return null;
-        try {
-          // get user from db
-          const user = await User.findOne({ email: credentials?.email });
-          console.log(user);
-          if (user) {
-            const isPassMatched = await bcrypt.compare(
-              credentials?.password,
-              user?.password
-            );
-            if (isPassMatched) {
-              return user;
-            } else {
-              throw new Error("Email or Password mismatched");
-            }
-          } else {
-            throw new Error("User not found");
-          }
-        } catch (error) {
-          throw new Error(error);
-        }
+        if (!credentials) return null;
+
+        await connectToDb();
+
+        const user = await User.findOne({ email: credentials.email });
+        if (!user) throw new Error("User not found");
+
+        const isPassMatched = await bcrypt.compare(
+          credentials.password,
+          user.password
+        );
+        if (!isPassMatched) throw new Error("Email or password mismatched");
+
+        return user; // Returned user will be passed into jwt() callback
       },
     }),
   ],
   callbacks: {
-    ...authConfig.callbacks,
-    async signIn({ user, account, profile }) {
-      // console.log({ user, account, profile });
+    ...authConfig.callbacks, // spread Edge-safe callbacks (jwt, session, authorized)
 
-      // check if the user is already on the database (for google provider)
+    async signIn({ user, account, profile }) {
       if (account.provider === "google") {
         await connectToDb();
+
         try {
-          const getUser = await User.findOne({ email: profile?.email });
-          if (!getUser) {
+          let existingUser = await User.findOne({ email: profile?.email });
+          if (!existingUser) {
             const newUser = new User({
               name: profile?.name,
               email: profile?.email,
               image: profile?.picture,
+              role: "user", // default role
             });
             await newUser.save();
+            existingUser = newUser;
           }
+          // Attach important fields so jwt callback has them
+          user.id = existingUser._id.toString(); // <-- add _id
+          user.role = existingUser.role;
         } catch (err) {
-          console.log("\n\nError from signin callback=> ", err, "\n\n");
+          console.error("Error in Google sign-in:", err);
           return false;
         }
       }
+
       return true;
     },
   },

@@ -12,8 +12,8 @@ export default async function ProductsAdmin() {
     console.error("Error fetching products:", error);
   }
   return (
-    <section className="min-h-screen items-stretch flex">
-      <div className="min-h-full grow">
+    <section className="min-h-screen">
+      <div className="min-h-full">
         <TabularProducts products={products.data} />
       </div>
     </section>

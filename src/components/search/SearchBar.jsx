@@ -17,10 +17,7 @@ export default function SearchBar({ className }) {
   return (
     <>
       <div className="py-6">
-        <form
-          onSubmit={handleSearch}
-          className={cn(`md:w-xl w-full mx-auto flex gap-2`, className)}
-        >
+        <form onSubmit={handleSearch} className={cn(`flex gap-2`, className)}>
           <input
             type="text"
             placeholder="Search products"

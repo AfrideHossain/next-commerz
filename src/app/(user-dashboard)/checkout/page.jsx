@@ -20,7 +20,7 @@ export default async function CheckOutPage() {
         <section className="min-h-screen flex items-center justify-center">
           <p>User not found</p>
         </section>
-      ) : */ <section className="flex *:w-full *:p-4 gap-10">
+      ) : */ <section className="flex flex-col-reverse md:flex-row *:w-full *:p-4 gap-10">
           <div className="space-y-4">
             <h1 className="text-xl uppercase text-center font-semibold">
               Billing information
