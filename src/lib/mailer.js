@@ -64,4 +64,17 @@ export async function sendResetEmail(to, token) {
   });
 }
 
-
+// TODO: send email function
+/**
+ * Utility function for email sending
+ * @param {String} to - Recipient's mail address
+ * @param {String} subject - Subject for the email
+ * @param {String} html - Email template body
+ */
+export async function emailSender(to, subject, html) {
+  await transporter.sendMail({
+    to,
+    subject,
+    html,
+  });
+}

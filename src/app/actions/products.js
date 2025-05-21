@@ -5,6 +5,7 @@ import { connectToDb } from "@/lib/mongoConnection";
 import { Product } from "@/models/product-model";
 import mongoose from "mongoose";
 import { revalidatePath } from "next/cache";
+import { workAsyncStorage } from "next/dist/server/app-render/entry-base";
 
 export async function addProduct(formData) {
   try {
@@ -215,5 +216,30 @@ export async function getProductsByCat(category, limit = 0) {
   } catch (error) {
     console.error("Error fetching products:", error);
     return { success: false, message: "Failed to fetch products" };
+  }
+}
+// Todo: Refactor
+// server action for fetching products based on tags
+export async function getProductsByTag(tagName) {
+  // try catch for error handling
+  try {
+    // establish database connection
+    await connectToDb();
+    // get products that matched tagname(single)
+    const products = await Product.find({ tags: { $in: tagName } })
+      .limit(5)
+      .lean();
+
+    // console logging for debugging
+    console.log(products);
+    // send response to api
+    if (products) {
+      return { success: true, products, message: "product found with the tag" };
+    } else {
+      return { success: false, message: "products not found" };
+    }
+  } catch (error) {
+    console.log("Error from server action ", error);
+    // throw new Error(error);
   }
 }

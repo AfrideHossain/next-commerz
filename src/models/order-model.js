@@ -4,6 +4,9 @@ import { Product } from "./product-model";
 
 const orderSchema = new mongoose.Schema(
   {
+    orderId: {
+      type: String,
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: User.modelName, // reference to the user model
@@ -22,6 +25,13 @@ const orderSchema = new mongoose.Schema(
         },
       },
     ],
+    grandTotal: {
+      type: Number,
+    },
+    orderDate: {
+      type: Date,
+      default: Date.now,
+    },
     deliveryCharge: {
       type: Number,
     },
