@@ -5,11 +5,14 @@ import Image from "next/image";
 import { toast, Zoom } from "react-toastify";
 import Loader from "@/components/shared/Loader/Loader";
 import { editAProduct, getAProduct } from "@/app/actions/products";
+import { getAvailableCategories } from "@/app/actions/categoriesAction";
 
 export default function EditProduct({ params }) {
-  const { id : productId } = React.use(params);
+  const { id: productId } = React.use(params);
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState(null);
+
+  const [categories, setCategories] = useState([]);
   const [productInfo, setProductInfo] = useState({
     name: "",
     category: "",
@@ -19,7 +22,23 @@ export default function EditProduct({ params }) {
     description: "",
     image: "",
   });
-
+  // fetch categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setLoading(true);
+      try {
+        const allCategoriesRes = await getAvailableCategories();
+        if (allCategoriesRes.success) {
+          setCategories(JSON.parse(allCategoriesRes.data));
+        }
+      } catch (error) {
+        console.log("unable to get categories");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCategories();
+  }, []);
   // Fetch product information from server
   useEffect(() => {
     const fetchProduct = async () => {
@@ -27,8 +46,8 @@ export default function EditProduct({ params }) {
       try {
         const productResponse = await getAProduct(productId);
         if (productResponse) {
-          setProductInfo(productResponse);
-          setPreview(productResponse.image);
+          setProductInfo(productResponse.data);
+          setPreview(productResponse.data.image);
         }
       } catch (error) {
         toast.error("Failed to fetch product details");
@@ -59,8 +78,20 @@ export default function EditProduct({ params }) {
 
     try {
       const formData = new FormData(event.target);
+      // Intercept and inspect formdata
       formData.append("id", productId); // Ensure ID is sent
 
+      // check if image is present
+      const imageFile = formData.get("productImage");
+      if (!imageFile.name) {
+        // console.log("image not inserted");
+        // remove productImage from form data
+        formData.delete("productImage");
+      }
+      // console.table([...formData]);
+      // console.log(imageFile.name);
+      
+      // pass formdata to the server action.
       const response = await editAProduct(formData);
       if (response.success) {
         toast.success(`${response.message}`, { transition: Zoom });
@@ -73,6 +104,9 @@ export default function EditProduct({ params }) {
       setLoading(false);
     }
   };
+
+  // console logging product info
+  // console.log(productInfo);
 
   return (
     <section className="relative flex items-center min-h-screen p-6">
@@ -131,9 +165,12 @@ export default function EditProduct({ params }) {
                 defaultValue={productInfo.category}
               >
                 <option value="">Select Category</option>
-                <option value="cookies">Cookies</option>
-                <option value="brownies">Brownies</option>
-                <option value="cakes">Cakes</option>
+                {categories.length > 0 &&
+                  categories.map((category) => (
+                    <option key={category._id} value={category.name}>
+                      {category.name}
+                    </option>
+                  ))}
               </select>
             </div>
 

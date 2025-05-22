@@ -7,13 +7,14 @@ export default function ChangeOrderStatusBtn({
   className,
   orderId,
   status,
+  options,
   children,
 }) {
   const handleConfirmOrder = async () => {
     // const parsedOrderId = JSON.parse(orderId);
     // console.log("parsed orderId: ", parsedOrderId.orderId);
-    console.log({ status });
-    const changeStatusRes = await changeOrderStatus(orderId, status);
+    console.log("options=> ", { options });
+    const changeStatusRes = await changeOrderStatus(orderId, status, options);
   };
   return (
     <button onClick={handleConfirmOrder} className={cn(className)}>

@@ -43,14 +43,24 @@ export default function CartIcon() {
           className="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow"
         >
           <div className="card-body">
-            <span className="text-lg font-bold">{cartItems.length} Items</span>
-            <span className="text-info">
-              Subtotal:{" "}
-              {cartItems.reduce(
-                (acc, item) => acc + item.price * item.quantity,
-                0
-              )}
-            </span>
+            {!isClient ? (
+              <progress className="progress w-full"></progress>
+            ) : (
+              <>
+                <span className="text-lg font-bold">
+                  {cartItems.length} Items
+                </span>
+                <span className="text-info">
+                  Subtotal:{" "}
+                  {cartItems.reduce(
+                    (acc, item) =>
+                      acc + item.discountPrice || item.price * item.quantity,
+                    0
+                  )}{" "}
+                  Taka
+                </span>
+              </>
+            )}
             <div className="card-actions">
               <Link href={"/cart"} className="btn btn-primary btn-block">
                 View cart

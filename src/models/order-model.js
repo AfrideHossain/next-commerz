@@ -19,6 +19,9 @@ const orderSchema = new mongoose.Schema(
           ref: Product.modelName,
           required: true,
         },
+        price: {
+          type: Number,
+        },
         quantity: {
           type: Number,
           min: 1,
@@ -31,6 +34,9 @@ const orderSchema = new mongoose.Schema(
     orderDate: {
       type: Date,
       default: Date.now,
+    },
+    shippedDate: {
+      type: Date,
     },
     deliveryCharge: {
       type: Number,
@@ -64,6 +70,12 @@ const orderSchema = new mongoose.Schema(
     status: {
       type: String,
       default: "pending",
+    },
+    shippedDate: {
+      type: Date,
+    },
+    declinedIssue: {
+      type: String,
     },
   },
   { timestamps: true }

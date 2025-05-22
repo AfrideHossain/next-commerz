@@ -3,21 +3,28 @@ import { auth } from "@/auth";
 import AddToCartBtn from "@/components/Products/AddToCartBtn";
 import Image from "next/image";
 import { BsStarFill, BsCartPlus, BsTruck, BsCreditCard } from "react-icons/bs";
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default async function SingleProduct({ params }) {
   // get the session
   const session = await auth();
   const { id } = await params;
-  const product = await getAProduct(id);
+  let product = {};
+  const productRes = await getAProduct(id);
   // Console logging the product obj for debugging purpose only.
   // console.log(product);
 
-  if (!product) {
+  if (!productRes.success) {
     return (
       <section className="min-h-screen flex items-center justify-center">
         <h1 className="text-3xl text-red-500">Product not found!</h1>
       </section>
     );
+  } else {
+    product = { ...productRes.data };
+    // console.log(product);
   }
 
   return (
@@ -61,17 +68,21 @@ export default async function SingleProduct({ params }) {
 
           {/* Price & Discount */}
           <div className="flex items-center gap-3 mt-4">
-            <span className="text-3xl font-bold text-blue-400">
-              ${product.discountPrice}
+            <span className="text-3xl flex gap-2 font-bold text-blue-400">
+              <FaBangladeshiTakaSign /> {product.discountPrice || product.price}
             </span>
-            {product.discountPrice !== product.price && (
-              <span className="text-lg line-through text-gray-500">
-                ${product.price}
-              </span>
-            )}
-            <span className="text-green-400 text-sm">
-              Save ${product.price - product.discountPrice}
-            </span>
+            {product.discountPrice ||
+              (product.discountPrice > 0 && (
+                <>
+                  <span className="text-lg line-through text-gray-500">
+                    {product.price} Taka
+                  </span>
+
+                  <span className="text-green-400 text-sm">
+                    Save {product.price - product.discountPrice} Taka
+                  </span>
+                </>
+              ))}
           </div>
 
           {/* Stock Info */}
@@ -120,7 +131,12 @@ export default async function SingleProduct({ params }) {
           </div>
           <div className="space-y-2 mt-6">
             <p className="text-lg font-semibold">Product Description</p>
-            <p className="text-sm text-gray-400">{product.description}</p>
+            <div className="text-gray-400 prose">
+              {/* <Markdown ></Markdown> */}
+              <Markdown remarkPlugins={remarkGfm}>
+                {product.description}
+              </Markdown>
+            </div>
           </div>
         </div>
       </div>

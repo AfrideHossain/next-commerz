@@ -141,7 +141,9 @@ export default function CartPage() {
           >
             <div>
               <h2 className="text-lg font-semibold">{item.name}</h2>
-              <p className="text-sm text-gray-400">Price: ${item.price}</p>
+              <p className="text-sm text-gray-400">
+                Price: {item.discountPrice || item.price} Taka
+              </p>
               <div className="flex items-center space-x-2 mt-2">
                 <button
                   onClick={() =>
@@ -164,7 +166,7 @@ export default function CartPage() {
                 </button>
               </div>
               <p className="text-sm font-bold text-white mt-1">
-                Total: ${item.price * item.quantity}
+                Total: {item.discountPrice || item.price * item.quantity} Taka
               </p>
             </div>
             <button

@@ -35,19 +35,19 @@ export default function OrderTableComp({ orders }) {
               </thead>
               <tbody>
                 {orders.map((order) => {
-                  const totalAmount =
-                    order.products.reduce(
-                      (acc, product) =>
-                        acc + product?.productId?.price * product?.quantity,
-                      0
-                    ) + parseFloat(order?.deliveryCharge || 0);
+                  // const totalAmount =
+                  //   order.products.reduce(
+                  //     (acc, product) =>
+                  //       acc + product?.productId?.price * product?.quantity,
+                  //     0
+                  //   ) + parseFloat(order?.deliveryCharge || 0);
 
                   return (
                     <tr
                       key={order._id.toString()}
                       className="border-t border-gray-700"
                     >
-                      <td className="p-2 break-all">{order._id.toString()}</td>
+                      <td className="p-2 break-all">{order.orderId}</td>
                       <td className="p-2">{order?.shipping?.name}</td>
                       <td className="p-2 space-y-1">
                         <p>{order?.userId?.email}</p>
@@ -60,7 +60,8 @@ export default function OrderTableComp({ orders }) {
                         </p>
                       </td>
                       <td className="p-2 text-yellow-400">
-                        {totalAmount} Taka
+                        {/* {totalAmount} */}
+                        {order.grandTotal} Taka
                       </td>
                       <td className="p-2">
                         <span

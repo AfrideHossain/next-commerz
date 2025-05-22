@@ -48,7 +48,7 @@ async function sendNewOrderMailToAdmin(
                 <strong>Total:</strong> ${totalAmount} Taka Only
               </p>
               <p style="text-align: center; margin: 30px 0;">
-                <a href="${process.env.NEXT_PUBLIC_APP_URL}/my-orders/${orderId}" style="display: inline-block; padding: 12px 24px; background-color: #00ba7b; color: #ffffff; text-decoration: none; font-size: 16px; border-radius: 5px; font-weight: bold;">
+                <a href="${process.env.NEXT_PUBLIC_APP_URL}/admin/orders/${orderId}" style="display: inline-block; padding: 12px 24px; background-color: #00ba7b; color: #ffffff; text-decoration: none; font-size: 16px; border-radius: 5px; font-weight: bold;">
                   Dive Into the Details
                 </a>
               </p>
@@ -100,14 +100,23 @@ export async function orderCheckout(formData) {
     const orderDate = new Date();
 
     // add order information to order collection.
-    let orderProducts = [];
-    cart.map((item) =>
-      orderProducts.push({ productId: item.productId, quantity: item.quantity })
-    );
+    const orderProducts = cart.map((item) => ({
+      productId: item.productId,
+      quantity: item.quantity,
+      price: item.discountPrice ?? item.price,
+    }));
+    // let orderProducts = [];
+    // cart.map((item) =>
+    //   orderProducts.push({
+    //     productId: item.productId,
+    //     quantity: item.quantity,
+    //     price: item.discountPrice ?? item.price,
+    //   })
+    // );
+    console.log("orderedProducts => ", orderProducts[0]);
     // calculate grand total
-    const total = cart.reduce(
-      (prev, currentItem) =>
-        prev + currentItem.discountPrice || currentItem.price,
+    const total = orderProducts.reduce(
+      (sum, item) => sum + item.price * item.quantity,
       0
     );
     const newOrder = new Order({
