@@ -6,6 +6,8 @@ import { addProduct } from "@/app/actions/products";
 import { toast, Zoom } from "react-toastify";
 import Loader from "@/components/shared/Loader/Loader";
 import { getAvailableCategories } from "@/app/actions/categoriesAction";
+import TextAreaInfoModalBtn from "@/components/Products/TextAreaInfoModalBtn";
+import TextAreaInfoModal from "@/components/Products/TextAreaInfoModal";
 
 export default function AddProduct() {
   const [loading, setLoading] = useState(false);
@@ -77,16 +79,16 @@ export default function AddProduct() {
   };
 
   return (
-    <section className="relative flex items-center min-h-screen p-6">
+    <section className="relative flex flex-col md:flex-row items-center min-h-screen p-6">
       {/* loading component */}
       {loading && (
         <div className="absolute top-0 left-0 z-50 w-full min-h-screen bg-slate-950/50 flex justify-center items-center">
           <Loader />
         </div>
       )}
-      <div className="rounded-lg w-full p-8 grid grid-cols-2 gap-8">
+      <div className="rounded-lg w-full md:p-8 grid md:grid-cols-2 gap-8">
         {/* Image Upload and Preview */}
-        <div className="flex flex-col justify-center items-center gap-6 border-r border-gray-500 pr-8">
+        <div className="flex flex-col justify-center items-center gap-6 md:border-r border-gray-500 md:pr-8">
           <p className="text-xl font-semibold">Preview Image</p>
           <div className="relative flex justify-center items-center w-full aspect-[4/3] border mb-5 rounded-md">
             {!preview ? (
@@ -159,7 +161,7 @@ export default function AddProduct() {
             </div>
 
             {/* Price, Stock, and Discount Price */}
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid md:grid-cols-3 gap-4">
               <div className="form-control">
                 <label className="label font-semibold">Price (Tk/-)</label>
                 <input
@@ -195,7 +197,9 @@ export default function AddProduct() {
 
             {/* Description */}
             <div className="form-control">
-              <label className="label font-semibold">Description</label>
+              <label className="pb-3 label justify-between font-semibold">
+                Description <TextAreaInfoModalBtn />
+              </label>
               <textarea
                 name="description"
                 className="textarea textarea-bordered w-full"
@@ -224,6 +228,8 @@ export default function AddProduct() {
           </form>
         </div>
       </div>
+      {/* modal */}
+      <TextAreaInfoModal />
     </section>
   );
 }

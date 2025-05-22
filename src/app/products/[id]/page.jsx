@@ -71,7 +71,7 @@ export default async function SingleProduct({ params }) {
             <span className="text-3xl flex gap-2 font-bold text-blue-400">
               <FaBangladeshiTakaSign /> {product.discountPrice || product.price}
             </span>
-            {product.discountPrice ||
+            {
               (product.discountPrice > 0 && (
                 <>
                   <span className="text-lg line-through text-gray-500">
@@ -129,8 +129,8 @@ export default async function SingleProduct({ params }) {
               Buy Now
             </button> */}
           </div>
-          <div className="space-y-2 mt-6">
-            <p className="text-lg font-semibold">Product Description</p>
+          <div className="space-y-3 mt-6">
+            <p className="text-3xl border-b border-gray-400 py-2 font-semibold">Product Description</p>
             <div className="text-gray-400 prose">
               {/* <Markdown ></Markdown> */}
               <Markdown remarkPlugins={remarkGfm}>

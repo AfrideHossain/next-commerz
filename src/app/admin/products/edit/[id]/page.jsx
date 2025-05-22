@@ -6,6 +6,8 @@ import { toast, Zoom } from "react-toastify";
 import Loader from "@/components/shared/Loader/Loader";
 import { editAProduct, getAProduct } from "@/app/actions/products";
 import { getAvailableCategories } from "@/app/actions/categoriesAction";
+import TextAreaInfoModal from "@/components/Products/TextAreaInfoModal";
+import TextAreaInfoModalBtn from "@/components/Products/TextAreaInfoModalBtn";
 
 export default function EditProduct({ params }) {
   const { id: productId } = React.use(params);
@@ -90,7 +92,7 @@ export default function EditProduct({ params }) {
       }
       // console.table([...formData]);
       // console.log(imageFile.name);
-      
+
       // pass formdata to the server action.
       const response = await editAProduct(formData);
       if (response.success) {
@@ -116,11 +118,11 @@ export default function EditProduct({ params }) {
           <Loader />
         </div>
       )}
-      <div className="bg-gray-900 rounded-lg shadow-lg w-full p-8 grid grid-cols-2 gap-8">
+      <div className="bg-gray-900 rounded-lg shadow-lg w-full md:p-8 grid md:grid-cols-2 gap-8">
         {/* Image Upload and Preview */}
-        <div className="flex flex-col justify-center items-center gap-6 border-r border-gray-500 pr-8">
+        <div className="flex flex-col justify-center items-center gap-6 md:border-r border-gray-500 md:pr-8">
           <p className="text-xl font-semibold">Preview Image</p>
-          <div className="relative w-full h-full border-0 mb-5 rounded-md">
+          <div className="relative w-full h-56 md:h-full border-0 mb-5 rounded-md">
             <Image
               src={preview || "/assets/picture.png"}
               alt="Product Preview"
@@ -162,7 +164,6 @@ export default function EditProduct({ params }) {
                 name="category"
                 className="select select-bordered w-full"
                 required
-                defaultValue={productInfo.category}
               >
                 <option value="">Select Category</option>
                 {categories.length > 0 &&
@@ -175,7 +176,7 @@ export default function EditProduct({ params }) {
             </div>
 
             {/* Price, Stock, and Discount Price */}
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid md:grid-cols-3 gap-4">
               <div className="form-control">
                 <label className="label font-semibold">Price (Tk/-)</label>
                 <input
@@ -214,7 +215,9 @@ export default function EditProduct({ params }) {
 
             {/* Description */}
             <div className="form-control">
-              <label className="label font-semibold">Description</label>
+              <label className="pb-3 label justify-between font-semibold">
+                Description <TextAreaInfoModalBtn />
+              </label>
               <textarea
                 name="description"
                 className="textarea textarea-bordered w-full"
@@ -245,6 +248,8 @@ export default function EditProduct({ params }) {
           </form>
         </div>
       </div>
+      {/* modal */}
+      <TextAreaInfoModal />
     </section>
   );
 }
