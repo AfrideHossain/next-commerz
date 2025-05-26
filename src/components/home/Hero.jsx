@@ -31,7 +31,7 @@ export default function Hero() {
             Snag epic fashion that screams YOU.
           </p>
           <Link
-            href="/shop"
+            href="/products"
             className="btn btn-primary btn-wide rounded-full font-semibold hover:bg-primary/80 transition-colors duration-300"
           >
             Shop Now

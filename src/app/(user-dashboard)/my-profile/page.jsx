@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import React from "react";
-import { getUserById } from "../actions/userAction";
+import { getUserById } from "../../actions/userAction";
 import Image from "next/image";
 import Link from "next/link";
 import { LuPencil } from "react-icons/lu";
@@ -11,11 +11,11 @@ export default async function MyProfile() {
   return (
     <>
       {/* Profile wrapper */}
-      <div className="rounded-lg p-4 bg-gray-800">
+      <div className="md:rounded-lg p-4 bg-gray-800">
         <h1 className="text-xl font-semibold mb-4">My Profile</h1>
         {/* Profile Head */}
-        <div className="relative bg-accent p-6 rounded-lg flex gap-10 items-center">
-          <div className="relative w-40 h-40 bg-gray-800/30 overflow-hidden rounded-xl">
+        <div className="relative bg-accent p-6 rounded-lg flex flex-col md:flex-row md:gap-10 items-center">
+          <div className="relative w-40 h-40 bg-gray-800/30 overflow-hidden rounded-xl md:mb-0 mb-5">
             <Image
               src={response?.user?.image}
               fill
@@ -42,7 +42,7 @@ export default async function MyProfile() {
           </div>
           <div>
             <Link
-              className=" absolute top-6 right-6 uppercase btn btn-neutral"
+              className=" absolute top-2 right-2 md:top-6 md:right-6 uppercase btn btn-neutral"
               href={"/my-profile/edit"}
             >
               <LuPencil />
@@ -84,7 +84,7 @@ export default async function MyProfile() {
           <p className="flex gap-4 items-center text-lg text-gray-400 py-4">
             Addresses <span className="border-b border-gray-400 grow"></span>
           </p>
-          <div className="flex gap-10">
+          <div className="flex flex-col gap-5 md:flex-row md:gap-10">
             {/* Permanent address  */}
             <div className="space-y-2 grow p-3 rounded-xl shadow-lg bg-neutral">
               <p className="text-gray-400 border-b border-gray-400 ">

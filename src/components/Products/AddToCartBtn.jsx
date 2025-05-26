@@ -33,6 +33,9 @@ export default function AddToCartBtn({ product, userEmail }) {
   //   }
   // }, [userEmail, productId, loading]);
   const handleAddToCart = async () => {
+    if (!userEmail) {
+      return toast.error("You have to login first");
+    }
     // return is loading state is true
     if (loading) return;
 
@@ -73,7 +76,7 @@ export default function AddToCartBtn({ product, userEmail }) {
     <button
       onClick={handleAddToCart}
       disabled={loading}
-      className="btn btn-primary flex items-center gap-2"
+      className="w-full md:w-fit btn btn-primary flex items-center gap-2"
     >
       <BsCartPlus className="w-5 h-5" />
       {loading ? "Adding..." : "Add to Cart"}

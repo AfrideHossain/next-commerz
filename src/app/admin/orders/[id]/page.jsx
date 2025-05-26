@@ -46,6 +46,10 @@ export default async function OrderDetailsAdmin({ params }) {
                 {order?.userId?.name}
               </p>
               <p className="text-sm text-gray-400">{order?.userId?.email}</p>
+              <p className="text-sm text-warning">
+                Ordered at:{" "}
+                {new Date(order.orderDate).toLocaleString().toString()}
+              </p>
             </div>
 
             {/* Status Display */}
@@ -71,7 +75,7 @@ export default async function OrderDetailsAdmin({ params }) {
                       ? `${statusColors[status]} border-transparent`
                       : "bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700"
                   }`}
-                status={status}
+                options={{ email: order?.userId?.email, status }}
                 orderId={order?._id.toString()}
               >
                 {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -80,6 +84,8 @@ export default async function OrderDetailsAdmin({ params }) {
           </div>
           {/* Declined message box */}
           <DeclineMsgForm
+            status={"declined"}
+            email={order?.userId?.email}
             orderId={order?._id.toString()}
           />
 

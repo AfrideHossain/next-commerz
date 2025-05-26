@@ -38,12 +38,12 @@ export default function EditForm({ prevInfo }) {
   };
   // console.log(prevInfo);
   return (
-    <Form action={handleSubmit}>
+    <Form className="container" action={handleSubmit}>
       <fieldset className="fieldset p-4 border border-gray-400 space-y-3">
         <legend className="fieldset-legend text-gray-300 px-2">
           Basic information
         </legend>
-        <div className="flex gap-4">
+        <div className="flex flex-col md:flex-row gap-4">
           <div className="space-y-4">
             <div className="input w-full">
               <label className="label">
@@ -96,7 +96,7 @@ export default function EditForm({ prevInfo }) {
       </fieldset>
       <fieldset className="fieldset p-4 border border-gray-400 space-y-3">
         <legend className="fieldset-legend text-gray-300 px-2">Address</legend>
-        <div className="flex gap-4">
+        <div className="flex flex-col gap-4">
           <fieldset className="fieldset grow p-4 border border-gray-400 space-y-3">
             <legend className="fieldset-legend text-gray-300 px-2">
               Permanent

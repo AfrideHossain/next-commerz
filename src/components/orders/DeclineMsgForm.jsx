@@ -3,7 +3,7 @@
 import { useState } from "react";
 import ChangeOrderStatusBtn from "./ChangeOrderStatusBtn";
 
-export default function DeclineMsgForm({ orderId }) {
+export default function DeclineMsgForm({ orderId, status, email }) {
   const [message, setMessage] = useState("");
 
   return (
@@ -25,7 +25,7 @@ export default function DeclineMsgForm({ orderId }) {
                             `}
           status={"declined"}
           orderId={orderId}
-          options={{ message }}
+          options={{ message, status, email }}
         >
           Decline
         </ChangeOrderStatusBtn>

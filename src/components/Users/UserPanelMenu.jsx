@@ -5,7 +5,7 @@ import { LuChevronRight } from "react-icons/lu";
 
 export default function UserPanelMenu() {
   const pathname = usePathname();
-  console.log(pathname);
+  // console.log(pathname);
   return (
     <>
       <ul className="menu rounded-box w-56">
@@ -41,7 +41,7 @@ export default function UserPanelMenu() {
             />{" "}
           </Link>
         </li>
-        <li>
+        {/* <li>
           <Link
             className={`flex justify-between ${
               pathname === "/my-profile/update-dp" ? "text-info" : ""
@@ -57,20 +57,35 @@ export default function UserPanelMenu() {
               }`}
             />{" "}
           </Link>
-        </li>
+        </li> */}
         <li>
           <Link
             className={`flex justify-between ${
-              pathname === "/my-profile/change-password" ? "text-info" : ""
+              pathname === "/change-password" ? "text-info" : ""
             }`}
-            href={"/my-profile/change-password"}
+            href={"/change-password"}
           >
             Change Password{" "}
             <LuChevronRight
               className={`${
-                pathname === "/my-profile/change-password"
+                pathname === "/change-password"
                   ? "text-info"
                   : "text-neutral-500"
+              }`}
+            />{" "}
+          </Link>
+        </li>
+        <li>
+          <Link
+            className={`flex justify-between ${
+              pathname === "/my-orders" ? "text-info" : ""
+            }`}
+            href={"/my-orders"}
+          >
+            My orders{" "}
+            <LuChevronRight
+              className={`${
+                pathname === "/my-orders" ? "text-info" : "text-neutral-500"
               }`}
             />{" "}
           </Link>

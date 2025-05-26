@@ -86,7 +86,7 @@ export default function OrderTableComp({ orders }) {
                           >
                             View
                           </Link>
-                          <ChangeOrderStatusBtn
+                          {/* <ChangeOrderStatusBtn
                             className="btn btn-xs btn-ghost text-info"
                             status="confirmed"
                             orderId={order._id.toString()}
@@ -106,7 +106,7 @@ export default function OrderTableComp({ orders }) {
                             orderId={order._id.toString()}
                           >
                             Ship
-                          </ChangeOrderStatusBtn>
+                          </ChangeOrderStatusBtn> */}
                         </div>
                       </td>
                     </tr>
@@ -119,13 +119,6 @@ export default function OrderTableComp({ orders }) {
           {/* Cards for Mobile */}
           <div className="block md:hidden space-y-4">
             {orders.map((order) => {
-              const totalAmount =
-                order.products.reduce(
-                  (acc, product) =>
-                    acc + product?.productId?.price * product?.quantity,
-                  0
-                ) + parseFloat(order?.deliveryCharge || 0);
-
               return (
                 <div
                   key={order._id.toString()}
@@ -147,7 +140,7 @@ export default function OrderTableComp({ orders }) {
                     )}
                   </p>
                   <p className="mt-1 text-yellow-400 font-semibold">
-                    Total: {totalAmount} Taka
+                    Total: {order.grandTotal} Taka
                   </p>
                   <p className="mt-1">
                     <span
@@ -171,7 +164,7 @@ export default function OrderTableComp({ orders }) {
                     >
                       View
                     </Link>
-                    <ChangeOrderStatusBtn
+                    {/* <ChangeOrderStatusBtn
                       className="btn btn-xs btn-ghost text-info"
                       status="confirmed"
                       orderId={order._id.toString()}
@@ -191,7 +184,7 @@ export default function OrderTableComp({ orders }) {
                       orderId={order._id.toString()}
                     >
                       Ship
-                    </ChangeOrderStatusBtn>
+                    </ChangeOrderStatusBtn> */}
                   </div>
                 </div>
               );

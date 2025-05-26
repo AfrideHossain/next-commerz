@@ -29,7 +29,7 @@ export default async function SingleProduct({ params }) {
 
   return (
     <section className="min-h-screen flex items-center justify-center py-10 px-5 text-white">
-      <div className="max-w-6xl w-full rounded-lg p-6 md:p-10 flex flex-col md:flex-row gap-8">
+      <div className="max-w-6xl w-full rounded-lg md:p-10 flex flex-col md:flex-row gap-8">
         {/* Left Side - Product Images */}
         <div className="w-full md:w-1/2 flex flex-col items-center">
           <Image
@@ -67,22 +67,21 @@ export default async function SingleProduct({ params }) {
           </div> */}
 
           {/* Price & Discount */}
-          <div className="flex items-center gap-3 mt-4">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-3 mt-4">
             <span className="text-3xl flex gap-2 font-bold text-blue-400">
               <FaBangladeshiTakaSign /> {product.discountPrice || product.price}
             </span>
-            {
-              (product.discountPrice > 0 && (
-                <>
-                  <span className="text-lg line-through text-gray-500">
-                    {product.price} Taka
-                  </span>
+            {product.discountPrice > 0 && (
+              <>
+                <span className="text-lg line-through text-gray-500">
+                  {product.price} Taka
+                </span>
 
-                  <span className="text-green-400 text-sm">
-                    Save {product.price - product.discountPrice} Taka
-                  </span>
-                </>
-              ))}
+                <span className="text-green-400 text-sm">
+                  Save {product.price - product.discountPrice} Taka
+                </span>
+              </>
+            )}
           </div>
 
           {/* Stock Info */}
@@ -119,18 +118,20 @@ export default async function SingleProduct({ params }) {
           </div> */}
 
           {/* Action Buttons */}
-          <div className="flex justify-end gap-4 mt-6">
+          <div className="flex md:justify-end gap-4 mt-6">
             <AddToCartBtn
               // productId={`${product._id}`}
               product={JSON.stringify(product)}
-              userEmail={session.user.email}
+              userEmail={session?.user?.email || ""}
             />
             {/* <button className="flex-1 px-6 py-3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-md transition duration-300">
               Buy Now
             </button> */}
           </div>
           <div className="space-y-3 mt-6">
-            <p className="text-3xl border-b border-gray-400 py-2 font-semibold">Product Description</p>
+            <p className="text-3xl border-b border-gray-400 py-2 font-semibold">
+              Product Description
+            </p>
             <div className="text-gray-400 prose">
               {/* <Markdown ></Markdown> */}
               <Markdown remarkPlugins={remarkGfm}>

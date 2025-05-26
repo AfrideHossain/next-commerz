@@ -3,36 +3,50 @@
 import { orderCheckout } from "@/app/actions/checkoutAction";
 import { clear } from "@/lib/redux/features/cart/cartSlice";
 import { useAppSelector, useAppDispatch } from "@/lib/redux/hooks/reduxHooks";
+import { useState } from "react";
 import Swal from "sweetalert2";
 
 export default function CheckOutForm({ userInfoString, charges }) {
+  // loading state
+  const [loading, setLoading] = useState(false);
   // state dispatcher
   const dispatch = useAppDispatch();
   // parsed userInfo
   const userInfo = JSON.parse(userInfoString);
   const cart = useAppSelector((state) => state.cart.items);
+
+  // order place handler
   const handlePlaceOrder = async (event) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    formData.append("userId", userInfo._id);
-    formData.append("charges", JSON.stringify(charges));
-    formData.append("cart", JSON.stringify(cart));
-    const data = Object.fromEntries(formData.entries());
-    console.log(data);
-    const placeOrderReq = await orderCheckout(formData);
-    // console.
-    if (placeOrderReq.success) {
-      Swal.fire({
-        title: "Yay!",
-        text: "You order has been placed.",
-        icon: "success",
-      }).then(() => dispatch(clear()));
-    } else {
-      Swal.fire({
-        title: "Oops!",
-        text: "Unable to place your order.",
-        icon: "error",
-      });
+    // set loading state to true
+    setLoading(true);
+    // try catch block for error handling
+    try {
+      const formData = new FormData(event.currentTarget);
+      formData.append("userId", userInfo._id);
+      formData.append("charges", JSON.stringify(charges));
+      formData.append("cart", JSON.stringify(cart));
+      const data = Object.fromEntries(formData.entries());
+      console.log(data);
+      const placeOrderReq = await orderCheckout(formData);
+      // console.
+      if (placeOrderReq.success) {
+        Swal.fire({
+          title: "Yay!",
+          text: "You order has been placed.",
+          icon: "success",
+        }).then(() => dispatch(clear()));
+      } else {
+        Swal.fire({
+          title: "Oops!",
+          text: "Unable to place your order.",
+          icon: "error",
+        });
+      }
+    } catch (error) {
+      throw new Error("Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -46,6 +60,7 @@ export default function CheckOutForm({ userInfoString, charges }) {
             placeholder="Full name"
             defaultValue={userInfo.name || ""}
             name="name"
+            required
           />
         </div>
         <div>
@@ -56,6 +71,7 @@ export default function CheckOutForm({ userInfoString, charges }) {
             placeholder="Phone number"
             defaultValue={userInfo.phone || ""}
             name="phone"
+            required
           />
         </div>
         <div className="grid grid-cols-3 gap-3">
@@ -67,6 +83,7 @@ export default function CheckOutForm({ userInfoString, charges }) {
               placeholder="City"
               defaultValue={userInfo.address.shipping.city || ""}
               name="shipping_city"
+              required
             />
           </div>
           <div>
@@ -77,6 +94,7 @@ export default function CheckOutForm({ userInfoString, charges }) {
               placeholder="District"
               defaultValue={userInfo.address.shipping.district || ""}
               name="shipping_district"
+              required
             />
           </div>
           <div>
@@ -87,6 +105,7 @@ export default function CheckOutForm({ userInfoString, charges }) {
               placeholder="Division"
               defaultValue={userInfo.address.shipping.division || ""}
               name="shipping_division"
+              required
             />
           </div>
         </div>
@@ -99,6 +118,7 @@ export default function CheckOutForm({ userInfoString, charges }) {
               placeholder="Zip Code"
               defaultValue={userInfo.address.shipping.zip || ""}
               name="shipping_zip"
+              required
             />
           </div>
           <div>
@@ -116,8 +136,12 @@ export default function CheckOutForm({ userInfoString, charges }) {
                 </div> */}
         </div>
         <div>
-          <button type="submit" className="btn btn-primary w-full">
-            Place Order
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn btn-primary w-full"
+          >
+            {loading ? "Placing order..." : "Place order"}
           </button>
         </div>
       </form>

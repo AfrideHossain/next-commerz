@@ -8,9 +8,9 @@ export default function SocialLogin() {
         type="submit"
         name="action"
         value={"google"}
-        className="bg-white text-black font-semibold rounded-md p-2 w-full"
+        className="w-full btn bg-white text-black font-semibold hover:bg-zinc-200 transition"
       >
-        Login with Google
+        Continue with Google
       </button>
     </Form>
   );

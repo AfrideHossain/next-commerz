@@ -37,7 +37,15 @@ export default async function Navbar() {
             }
           />
         </div>
-        <a className="btn btn-ghost text-xl">JADUR HAAT</a>
+        <Link href={"/"} className="relative w-32 btn btn-ghost">
+          <Image
+            src={"/assets/logo/logo-variant-2.png"}
+            fill
+            sizes="50vw"
+            priority
+            alt="Jadur Haat Logo Variant 2"
+          />
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <Menu className={"menu menu-horizontal px-1"} />
@@ -81,13 +89,11 @@ export default async function Navbar() {
                     Profile
                   </Link>
                 </li>
-                <li>
-                  {session?.user.role === "admin" ? (
+                {session?.user.role === "admin" && (
+                  <li>
                     <Link href={"/admin"}>Dashboard</Link>
-                  ) : (
-                    <Link href={"/"}>Settings</Link>
-                  )}
-                </li>
+                  </li>
+                )}
                 <li>
                   {/* <Form action={logoutUser}>
                     <button type="submit">Logout</button>

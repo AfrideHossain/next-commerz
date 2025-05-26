@@ -54,7 +54,7 @@ export default function CartIcon() {
                   Subtotal:{" "}
                   {cartItems.reduce(
                     (acc, item) =>
-                      acc + item.discountPrice || item.price * item.quantity,
+                      acc + item.discountPrice ?? item.price * item.quantity,
                     0
                   )}{" "}
                   Taka

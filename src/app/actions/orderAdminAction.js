@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 // =========== mail functions start ===========
 // Confirmation mail
 async function sendConfirmationMail(
+  to,
   orderId,
   customerName,
   orderDate,
@@ -65,14 +66,11 @@ async function sendConfirmationMail(
   </table>
 </div>`;
 
-  await emailSender(
-    process.env.EMAIL_USER,
-    `Woohoo! Your Order(${orderId}) is Confirmed!`,
-    html
-  );
+  await emailSender(to, `Woohoo! Your Order(${orderId}) is Confirmed!`, html);
 }
 // Shipped mail
 async function sendShippedMail(
+  to,
   orderId,
   customerName,
   shippedDate,
@@ -126,14 +124,11 @@ async function sendShippedMail(
   </table>
 </div>`;
 
-  await emailSender(
-    process.env.EMAIL_USER,
-    `Your Order(${orderId}) is On Its Way!`,
-    html
-  );
+  await emailSender(to, `Your Order(${orderId}) is On Its Way!`, html);
 }
 // Declined mail
 async function sendDeclinedMail(
+  to,
   orderId,
   customerName,
   orderDate,
@@ -187,11 +182,7 @@ async function sendDeclinedMail(
   </table>
 </div>`;
 
-  await emailSender(
-    process.env.EMAIL_USER,
-    `Oh No, Your Order(${orderId}) Needs Attention`,
-    html
-  );
+  await emailSender(to, `Oh No, Your Order(${orderId}) Needs Attention`, html);
 }
 // =========== mail functions end ===========
 
@@ -243,58 +234,61 @@ export async function getAllOrders(status) {
  * Change order's status
  * @param {string} orderId
  * @param {string} status
- * @param {{message?:string}} options
+ * @param {{status: string, email: string, message?:string,}} options
  * @returns {Promise<{success: boolean, msg: string}>}
  */
-export async function changeOrderStatus(orderId, status, options) {
+export async function changeOrderStatus(orderId, options) {
   try {
     // connect to database
     // console.log("connecting to database...");
     await connectToDb();
     // database operation to change status
 
-    if (status === "confirmed") {
+    if (options.status === "confirmed") {
       const changeStatusRes = await Order.findByIdAndUpdate(orderId, {
         $set: {
-          status,
+          status: options.status,
         },
       });
 
-      // console.log("order status changed to confirmed => ", changeStatusRes);
+      console.log("order status changed to confirmed => ", changeStatusRes);
       await sendConfirmationMail(
+        options.email,
         changeStatusRes.orderId,
         changeStatusRes.shipping.name,
         changeStatusRes.orderDate,
         changeStatusRes.grandTotal
       );
     }
-    if (status === "shipped") {
+    if (options.status === "shipped") {
       const shippedDate = new Date();
       const estimatedDelivery = new Date(Date.now() + 3600000 * (24 * 5)); //increased 5 days
       const changeStatusRes = await Order.findByIdAndUpdate(orderId, {
         $set: {
-          status,
+          status: options.status,
           shippedDate,
         },
       });
-      // console.log("order status changed to shipped => ", changeStatusRes);
+      console.log("order status changed to shipped => ", changeStatusRes);
       await sendShippedMail(
+        options.email,
         changeStatusRes.orderId,
         changeStatusRes.shipping.name,
         shippedDate,
         estimatedDelivery
       );
     }
-    if (status === "declined") {
+    if (options.status === "declined") {
       // do something
       const changeStatusRes = await Order.findByIdAndUpdate(orderId, {
         $set: {
-          status,
+          status: options.status,
           declinedIssue: options.message,
         },
       });
-      // console.log("order status changed to shipped => ", changeStatusRes);
+      console.log("order status changed to shipped => ", changeStatusRes);
       await sendDeclinedMail(
+        options.email,
         changeStatusRes.orderId,
         changeStatusRes.shipping.name,
         changeStatusRes.orderDate,
@@ -347,6 +341,39 @@ export async function getAnOrderById(orderId) {
       return {
         success: true,
         msg: "Order found not by id",
+      };
+    }
+  } catch (error) {
+    console.log("Error from get an order by id server action: ", error);
+    return { success: false, msg: "Failed to get order details by id." };
+  }
+}
+
+export async function getOrdersByUid(userId) {
+  console.log(userId);
+  try {
+    // connect to database
+    await connectToDb();
+
+    // check orderId if it's not empty
+    if (!userId) {
+      return { success: false, msg: "User id not found" };
+    }
+    // get order data with mongoose
+    const orderDetailsRes = await Order.find({ userId })
+      .select("orderDate grandTotal status declinedIssue orderId")
+      .lean();
+    if (orderDetailsRes) {
+      console.log(orderDetailsRes);
+      return {
+        success: true,
+        msg: "Order found by uid",
+        orders: orderDetailsRes,
+      };
+    } else {
+      return {
+        success: true,
+        msg: "Order found not by uid",
       };
     }
   } catch (error) {

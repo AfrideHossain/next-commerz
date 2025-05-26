@@ -24,13 +24,13 @@ export default function RegistrationForm() {
   return (
     <>
       <form
-        className="space-y-4 w-96"
+        className="space-y-4 w-full"
         encType="multipart/form-data"
         onSubmit={handleRegistration}
       >
-        <div className="form-control w-full">
-          <label htmlFor="name" className="label">
-            <span className="label-text">Name</span>
+        <div className="form-control w-full space-y-1">
+          <label htmlFor="name" className="label text-sm">
+            Name
           </label>
           <input
             id="name"
@@ -39,35 +39,36 @@ export default function RegistrationForm() {
             className="input input-bordered w-full"
           />
         </div>
-        <div className="form-control w-full">
-          <label htmlFor="email" className="label">
-            <span className="label-text">Email</span>
+        <div className="form-control w-full space-y-1">
+          <label htmlFor="email" className="label text-sm">
+            Email
           </label>
           <input
             id="email"
             type="email"
             name="email"
             autoComplete="off"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full focus:outline-none"
           />
         </div>
-        <div className="form-control w-full">
-          <label htmlFor="password" className="label">
-            <span className="label-text">Password</span>
+        <div className="form-control w-full space-y-1">
+          <label htmlFor="password" className="label text-sm">
+            Password
           </label>
           <input
             id="password"
             type="password"
             name="password"
             autoComplete="off"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full focus:outline-none"
           />
         </div>
+
         {/* file input */}
-        <div className="form-control w-full">
-          <div className="label">
-            <span className="label-text">Display picture</span>
-          </div>
+        <div className="form-control w-full space-y-1">
+          <label htmlFor="dp_image" className="label text-sm">
+            Display picture(DP)
+          </label>
           <input
             type="file"
             name="dp_image"
@@ -76,11 +77,8 @@ export default function RegistrationForm() {
           />
         </div>
         <div>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white font-semibold rounded-md p-2"
-          >
-            Register
+          <button type="submit" className="w-full btn btn-primary">
+            Sign Up
           </button>
         </div>
       </form>

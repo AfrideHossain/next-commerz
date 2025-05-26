@@ -32,37 +32,34 @@ export default function LoginForm() {
   return (
     <>
       <div className="text-xl text-red-500">{error}</div>
-      <Form className="space-y-4 w-96" onSubmit={handleLogin}>
-        <div className="form-control w-full">
-          <label htmlFor="email" className="label">
-            <span className="label-text">Email</span>
+      <Form className="space-y-4 w-full" onSubmit={handleLogin}>
+        <div className="form-control w-full space-y-1">
+          <label htmlFor="email" className="label text-sm">
+            Email
           </label>
           <input
             id="email"
             type="email"
             name="email"
             autoComplete="off"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full focus:outline-none"
           />
         </div>
-        <div className="form-control w-full">
-          <label htmlFor="password" className="label">
-            <span className="label-text">Password</span>
+        <div className="form-control w-full space-y-1">
+          <label htmlFor="password" className="label text-sm">
+            Password
           </label>
           <input
             id="password"
             type="password"
             name="password"
             autoComplete="off"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full focus:outline-none"
           />
         </div>
         <div>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white font-semibold rounded-md p-2"
-          >
-            Login
+          <button type="submit" className="w-full btn btn-primary">
+            Sign In
           </button>
         </div>
       </Form>

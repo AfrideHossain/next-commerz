@@ -11,7 +11,7 @@ import crypto from "crypto";
 export async function socialLogin(formData) {
   const action = formData.get("action");
   // console.log(action);
-  await signIn(action, { redirectTo: "/home" });
+  await signIn(action, { redirectTo: "/" });
 }
 
 // logout

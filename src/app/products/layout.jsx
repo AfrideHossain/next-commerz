@@ -83,7 +83,7 @@ export default function ProductsLayout({ children }) {
       {/* Main Content */}
       <main className="flex-1 p-4 md:p-6 z-10">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold">Products</h1>
+          
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             className="md:hidden p-2 bg-gray-700 rounded-md text-white"
