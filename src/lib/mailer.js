@@ -1,11 +1,26 @@
 import nodemailer from "nodemailer";
 
+// const transporter = nodemailer.createTransport({
+//   service: "gmail",
+//   auth: {
+//     user: process.env.EMAIL_USER,
+//     pass: process.env.EMAIL_PASS,
+//   },
+// });
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, // Use STARTTLS
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    user: process.env.EMAIL_USER, // Your Gmail email
+    pass: process.env.EMAIL_PASS, // App Password
   },
+  tls: {
+    minVersion: "TLSv1.2", // Enforce TLS 1.2 or higher
+    rejectUnauthorized: true, // Reject invalid certificates
+  },
+  logger: true, // Optional: Enable logging for debugging
+  debug: true, // Optional: Show debug output
 });
 
 // reset mail sender function

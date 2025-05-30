@@ -16,7 +16,7 @@ export default function Home() {
         </div>
         <div>
           <h1 className="text-3xl mb-5 font-semibold w-fit px-4 pb-2 border-b-2 border-blue-700">New Arrival</h1>
-          <ProductsByTag tagname={"featured"} />
+          <ProductsByTag tagname={"newArrival"} />
         </div>
         <div>
           <ServicesSec />

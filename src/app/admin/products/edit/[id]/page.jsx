@@ -175,6 +175,19 @@ export default function EditProduct({ params }) {
               </select>
             </div>
 
+            {/* tags */}
+            <div>
+              <label className="label font-semibold">Tags</label>
+              <input
+                type="text"
+                name="tags"
+                className="input input-bordered w-full"
+                placeholder="Enter tags (separate by comma)"
+                defaultValue={productInfo.tags.join(", ")}
+                required
+              />
+            </div>
+
             {/* Price, Stock, and Discount Price */}
             <div className="grid md:grid-cols-3 gap-4">
               <div className="form-control">

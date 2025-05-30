@@ -1,5 +1,5 @@
 "use server";
-import { signIn, signOut } from "@/auth";
+import { auth, signIn, signOut } from "@/auth";
 import cloudinary from "@/lib/cloudinary.config";
 import { sendResetEmail } from "@/lib/mailer";
 import { connectToDb } from "@/lib/mongoConnection";
@@ -212,6 +212,58 @@ export async function resetPassword(token, pass) {
     return {
       success: false,
       message: "An error occurred while resetting the password.",
+    };
+  }
+}
+
+// change password
+export async function changePassword(formData) {
+  try {
+    const session = await auth();
+    if (!session?.user?.email) {
+      throw new Error("Unauthorized");
+    }
+
+    // Connect to MongoDB
+    await connectToDb();
+
+    const { current_pass, new_pass, confirm_new_pass } =
+      Object.fromEntries(formData);
+
+    // Basic validation
+    if (!current_pass || !new_pass || !confirm_new_pass) {
+      throw new Error("All fields are required.");
+    }
+
+    if (new_pass !== confirm_new_pass) {
+      throw new Error("New password and confirmation do not match.");
+    }
+
+    // Fetch user from DB
+    const user = await User.findOne({ email: session.user.email });
+    if (!user) {
+      throw new Error("User not found.");
+    }
+
+    // Check current password
+    const isMatch = await bcrypt.compare(current_pass, user.password);
+    if (!isMatch) {
+      throw new Error("Current password is incorrect.");
+    }
+
+    // Hash new password
+    const hashedPassword = await hashPassword(new_pass);
+
+    // Update user password
+    user.password = hashedPassword;
+    await user.save();
+
+    // Optionally redirect or return a success message
+    return { success: true, message: "Password updated successfully." };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message || "Something went wrong.",
     };
   }
 }

@@ -1,5 +1,6 @@
 import SocialLogin from "@/components/authentication/SocialLogin";
 import RegistrationForm from "@/components/authentication/RegistrationForm";
+import Image from "next/image";
 
 export default function Registration() {
   return (

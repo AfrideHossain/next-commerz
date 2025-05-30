@@ -5,9 +5,10 @@ export default async function ProductsByTag({ tagname }) {
   let products = [];
 
   const res = await getProductsByTag(tagname);
+  console.log("Response from: ", res);
 
   if (res.success) {
-    products = res.products;
+    products = res.data;
   }
   return (
     <>

@@ -6,6 +6,11 @@ import { BsStarFill, BsCartPlus, BsTruck, BsCreditCard } from "react-icons/bs";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import {
+  getAverageRating,
+  getRatingsForProduct,
+} from "@/app/actions/ratingActions";
+import RatingForm from "@/components/Products/RatingForm";
 
 export default async function SingleProduct({ params }) {
   // get the session
@@ -26,6 +31,11 @@ export default async function SingleProduct({ params }) {
     product = { ...productRes.data };
     // console.log(product);
   }
+
+  //Product rating
+  const avgRatingRes = await getAverageRating(product?._id?.toString() || id);
+  const avgRating = avgRatingRes.success ? avgRatingRes.data : 0;
+  console.log({avgRatingRes})
 
   return (
     <section className="min-h-screen flex items-center justify-center py-10 px-5 text-white">
@@ -65,6 +75,21 @@ export default async function SingleProduct({ params }) {
             ))}
             <span className="ml-2 text-gray-300 text-sm">(120 reviews)</span>
           </div> */}
+          <div className="flex items-center mt-2 gap-2 text-yellow-400">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <BsStarFill
+                key={star}
+                className={`w-5 h-5 ${
+                  star <= Math.round(avgRating)
+                    ? "text-yellow-400"
+                    : "text-gray-500"
+                }`}
+              />
+            ))}
+            <span className="text-sm text-gray-300">
+              ({avgRating.toFixed(1)} stars)
+            </span>
+          </div>
 
           {/* Price & Discount */}
           <div className="flex flex-col md:flex-row items-start md:items-center gap-3 mt-4">
@@ -128,6 +153,7 @@ export default async function SingleProduct({ params }) {
               Buy Now
             </button> */}
           </div>
+
           <div className="space-y-3 mt-6">
             <p className="text-3xl border-b border-gray-400 py-2 font-semibold">
               Product Description
@@ -139,6 +165,8 @@ export default async function SingleProduct({ params }) {
               </Markdown>
             </div>
           </div>
+          {/* Rating form */}
+          <RatingForm productId={id} userEmail={session?.user?.email || ""} />
         </div>
       </div>
     </section>

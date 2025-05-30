@@ -38,10 +38,10 @@ export default function Footer() {
             <FaHome /> <p>Pangsha, rajbari</p>
           </div>
           <div className="flex items-center gap-2 text-sm md:text-base">
-            <FaPhoneAlt /> <p>+880 17047 60805</p>
+            <FaPhoneAlt /> <p>+880 1739 302083</p>
           </div>
           <div className="flex items-center gap-2 text-sm md:text-base">
-            <FaEnvelope /> <p>afridehossain@hotmail.com</p>
+            <FaEnvelope /> <p>jadurhaat.1@gmail.com</p>
           </div>
         </div>
       </div>

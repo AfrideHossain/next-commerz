@@ -33,12 +33,12 @@ export default async function MyProfile() {
             <p className="text-lg text-black">
               Email : <span>{response?.user.email}</span>
             </p>
-            <p className="text-lg text-black">
+            {/* <p className="text-lg text-black">
               Status :{" "}
               <span className="badge badge-ghost text-emerald-500 text-sm">
                 Verified
               </span>
-            </p>
+            </p> */}
           </div>
           <div>
             <Link

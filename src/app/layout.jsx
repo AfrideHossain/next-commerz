@@ -19,7 +19,7 @@ export const metadata = {
   description:
     "Explore Jadur Haat’s curated fashion for ages 14-40. Snag bold, luxurious styles that scream YOU. Own the Vibe, Rule the Scene with trendy designs.",
   keywords:
-    "Jadur Haat, fashion e-commerce Bangladesh, trendy clothing, luxury fashion, streetwear Bangladesh, formal attire, youth fashion, modern fashion, women’s clothing, men’s fashion, designer outfits, ethnic wear Bangladesh, chic streetwear, fashion accessories, trendy outfits Dhaka, online fashion store, curated fashion, fashion for teens, premium apparel",
+    "Jadur Haat, fashion e-commerce Bangladesh, trendy clothing, luxury fashion, streetwear Bangladesh, formal attire, youth fashion, modern fashion, women’s clothing, men’s fashion, designer outfits, ethnic wear Bangladesh, chic streetwear, fashion accessories, trendy outfits Dhaka, online fashion store, curated fashion, fashion for teens, premium apparel, jadur haat",
 };
 
 export default async function RootLayout({ children }) {

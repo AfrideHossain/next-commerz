@@ -20,7 +20,7 @@ export async function registerACategory(formData) {
 
     const newCategory = new Category({
       name: name.toLowerCase(),
-      slug,
+      slug: slug.toLowerCase(),
       description,
       parent,
     });

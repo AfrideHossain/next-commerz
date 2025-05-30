@@ -22,7 +22,7 @@ export default function LoginForm() {
         console.log(response.error);
         setError(response.error.message);
       } else {
-        router.push("/home");
+        router.push("/");
       }
     } catch (error) {
       console.log(error);
