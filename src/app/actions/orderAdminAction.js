@@ -327,7 +327,7 @@ export async function getAnOrderById(orderId) {
         },
         {
           path: "userId",
-          select: "name email",
+          select: "name email vipPass",
         },
       ]);
     if (orderDetailsRes) {

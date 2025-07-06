@@ -80,8 +80,12 @@ const userSchema = new mongoose.Schema(
           default: 1,
           min: 1,
         },
+        size: {
+          type: String,
+        },
       },
     ],
+    vipPass: { type: Boolean },
     resetToken: { type: String },
     resetTokenExpiry: { type: Date },
   },

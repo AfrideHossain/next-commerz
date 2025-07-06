@@ -16,6 +16,7 @@ export default async function OrderDetailsAdmin({ params }) {
   let order = {};
   const getOrderRes = await getAnOrderById(id);
   if (getOrderRes.success) {
+    // console.log(getOrderRes.order);
     order = getOrderRes.order;
   } else {
     throw new Error(getOrderRes.msg);
@@ -25,12 +26,12 @@ export default async function OrderDetailsAdmin({ params }) {
     (acc, item) => acc + item?.price * item?.quantity,
     0
   );
-  const total = subtotal + order?.deliveryCharge;
+  const total = order.grandTotal;
 
   // change status handler
-  const handleStatusChange = (newStatus) => {
-    console.log(newStatus);
-  };
+  // const handleStatusChange = (newStatus) => {
+  //   console.log(newStatus);
+  // };
 
   return (
     <div className="text-gray-200 p-6">
@@ -133,6 +134,12 @@ export default async function OrderDetailsAdmin({ params }) {
               <span>Subtotal</span>
               <span>{subtotal} Taka</span>
             </div>
+            {order?.userId?.vipPass && (
+              <div className="flex justify-between">
+                <span>VIP Customer Discount</span>
+                <span> - 5% </span>
+              </div>
+            )}
             <div className="flex justify-between">
               <span>Delivery Charge</span>
               <span>{order?.deliveryCharge} Taka</span>

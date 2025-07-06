@@ -26,6 +26,9 @@ export default function CheckOutForm({ userInfoString, charges }) {
       formData.append("userId", userInfo._id);
       formData.append("charges", JSON.stringify(charges));
       formData.append("cart", JSON.stringify(cart));
+      if (userInfo.vipPass) {
+        formData.append("vipPass", JSON.stringify(userInfo.vipPass));
+      }
       const data = Object.fromEntries(formData.entries());
       console.log(data);
       const placeOrderReq = await orderCheckout(formData);

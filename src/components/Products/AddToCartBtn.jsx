@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { useAppDispatch } from "@/lib/redux/hooks/reduxHooks";
 import { add } from "@/lib/redux/features/cart/cartSlice";
 
-export default function AddToCartBtn({ product, userEmail }) {
+export default function AddToCartBtn({ product, size, userEmail }) {
   const [loading, setLoading] = useState(false);
   const parsedProduct = JSON.parse([product]);
   // the redux dispatch from hooks
@@ -36,6 +36,10 @@ export default function AddToCartBtn({ product, userEmail }) {
     if (!userEmail) {
       return toast.error("You have to login first");
     }
+    if (!size) {
+      toast.error("product size is required!");
+      return;
+    }
     // return is loading state is true
     if (loading) return;
 
@@ -47,6 +51,7 @@ export default function AddToCartBtn({ product, userEmail }) {
       const res = await addToCart({
         userEmail,
         productId: parsedProduct._id.toString(),
+        size,
         quantity: 1,
       });
 
@@ -56,6 +61,7 @@ export default function AddToCartBtn({ product, userEmail }) {
             productId: parsedProduct._id,
             name: parsedProduct.name,
             price: parsedProduct.price,
+            size,
             quantity: 1,
           })
         );

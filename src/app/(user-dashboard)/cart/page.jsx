@@ -1,12 +1,21 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { getCart, updateCart, removeFromCart } from "@/app/actions/cartActions";
+import {
+  getCart,
+  updateCart,
+  removeFromCart,
+  removeAllFromCart,
+} from "@/app/actions/cartActions";
 import { useSession } from "next-auth/react";
 import Loader from "@/components/shared/Loader/Loader";
 import { toast } from "react-toastify";
-import { useAppDispatch } from "@/lib/redux/hooks/reduxHooks";
-import { removeItem, updateItem } from "@/lib/redux/features/cart/cartSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks/reduxHooks";
+import {
+  removeItem,
+  updateItem,
+  clear,
+} from "@/lib/redux/features/cart/cartSlice";
 import Link from "next/link";
 
 export default function CartPage() {
@@ -16,16 +25,23 @@ export default function CartPage() {
   useEffect(() => {
     setIsClient(true);
   }, []);
-  const [cart, setCart] = useState([]);
+
   const [loading, setLoading] = useState(false);
   const { data: session, status } = useSession();
+  // lock increase, decrease button if loading
+  const [isUpdateBtnLocked, setIsUpdateBtnLocked] = useState(false);
   // const userEmail = session?.user?.email;
   const userEmail = useMemo(() => session?.user?.email, [status]);
 
   // dispatch from redux toolkit
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
+  // should be removed if not works in production
+  const initialCart = useAppSelector((state) => state.cart.items);
+
+  const [cart, setCart] = useState(initialCart || []);
+  // temporarily muted
+  /* useEffect(() => {
     setLoading(true);
     if (!userEmail) {
       setLoading(false);
@@ -34,8 +50,8 @@ export default function CartPage() {
 
     getCart(userEmail)
       .then((res) => {
+        console.log("From cart page: ", res);
         if (res.success) {
-          console.log(res);
           setCart((prev) =>
             JSON.stringify(prev) !== JSON.stringify(res.cart) ? res.cart : prev
           );
@@ -43,20 +59,21 @@ export default function CartPage() {
       })
       .catch((error) => console.error("Error fetching cart:", error))
       .finally(() => setLoading(false));
-  }, [userEmail]); // Depend only on `userEmail`
+  }, [userEmail]); */ // Depend only on `userEmail`
 
   // Async function for handling product's quantity update
   async function handleUpdate(productId, newQuantity) {
     if (newQuantity < 1) return;
-    setLoading(true);
+    // setLoading(true);
+    setIsUpdateBtnLocked(true);
     try {
+      dispatch(updateItem({ productId, quantity: newQuantity }));
       const res = await updateCart({
         userEmail,
         productId,
         quantity: newQuantity,
       });
       if (res.success) {
-        dispatch(updateItem({ productId, quantity: newQuantity }));
         setCart((prev) =>
           prev.map((item) =>
             item.productId === productId
@@ -71,7 +88,8 @@ export default function CartPage() {
     } catch (error) {
       console.error(error.message);
     } finally {
-      setLoading(false);
+      // setLoading(false);
+      setIsUpdateBtnLocked(false);
     }
   }
 
@@ -103,9 +121,18 @@ export default function CartPage() {
   //   setLoading(false);
   //   alert("Checkout successful! 🎉");
   // }
-  // TODO: Checkout functionality here...
+  const handleClearCart = async () => {
+    const res = await removeAllFromCart(userEmail);
+    if (res.success) {
+      dispatch(clear());
+      setCart([]);
+      toast.success("Cart cleared");
+    } else {
+      toast.error("Something went wrong!");
+    }
+  };
 
-  if (loading) {
+  if (!isClient || loading) {
     return (
       <div className="min-h-screen flex justify-center items-center">
         <Loader />
@@ -132,11 +159,20 @@ export default function CartPage() {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-2xl font-bold text-white mb-4">Your Cart 🛒</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-white mb-4">Your Cart 🛒</h1>
+        <button
+          onClick={handleClearCart}
+          className="btn btn-error"
+          disabled={loading}
+        >
+          Clear Cart
+        </button>
+      </div>
       <div className="space-y-4">
-        {cart.map((item) => (
+        {cart.map((item, indx) => (
           <div
-            key={item.productId}
+            key={indx + 1}
             className="bg-gray-800 p-4 rounded-lg flex justify-between items-center"
           >
             <div>
@@ -144,38 +180,49 @@ export default function CartPage() {
               <p className="text-sm text-gray-400">
                 Price: {item.discountPrice || item.price} Taka
               </p>
-              <div className="flex items-center space-x-2 mt-2">
+              <div className="flex items-center space-x-4 mt-2">
                 <button
                   onClick={() =>
                     handleUpdate(item.productId, item.quantity - 1)
                   }
                   className="bg-gray-700 text-white px-2 py-1 rounded"
-                  disabled={loading}
+                  disabled={isUpdateBtnLocked}
                 >
                   -
                 </button>
-                <span className="text-white">{item.quantity}</span>
+                <span className="text-white text-sm">QTY: {item.quantity}</span>
                 <button
                   onClick={() =>
                     handleUpdate(item.productId, item.quantity + 1)
                   }
                   className="bg-gray-700 text-white px-2 py-1 rounded"
-                  disabled={loading}
+                  disabled={isUpdateBtnLocked}
                 >
                   +
                 </button>
+                <div className="flex gap-2 items-center">
+                  <p>Size: {item?.size}</p>
+                  {/* <form>
+                    <input
+                      className="input input-sm w-15"
+                      name="size"
+                      defaultValue={item?.size?.toUpperCase()}
+                    />
+                    <button></button>
+                  </form> */}
+                </div>
               </div>
               <p className="text-sm font-bold text-white mt-1">
                 Total: {item.discountPrice || item.price * item.quantity} Taka
               </p>
             </div>
-            <button
+            {/* <button
               onClick={() => handleRemove(item.productId)}
               className="btn btn-error"
               disabled={loading}
             >
               Remove
-            </button>
+            </button> */}
           </div>
         ))}
       </div>

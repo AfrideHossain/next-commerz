@@ -8,6 +8,7 @@ export default async function CheckOutPage() {
   const session = await auth();
   let userInfo = undefined;
   const getUserReq = await getUserById(session.user.id);
+  console.log("From checkout: ", getUserReq);
   if (getUserReq.success) {
     userInfo = getUserReq.user;
   } else {
@@ -36,9 +37,10 @@ export default async function CheckOutPage() {
                 Shipping
               </p>
               {/* checkout form */}
+              {/* shipping charges is 0 for now */}
               <CheckOutForm
                 userInfoString={JSON.stringify(userInfo)}
-                charges={{ shipping: 120 }}
+                charges={{ shipping: 0 }}
               />
             </div>
           </div>
@@ -47,7 +49,7 @@ export default async function CheckOutPage() {
               Cart Summary
             </h1>
             <>
-              <CartDetails />
+              <CartDetails user={userInfo} />
             </>
             <div className="space-y-3">
               <p className="label font-semibold tracking-widest uppercase">

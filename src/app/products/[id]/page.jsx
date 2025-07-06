@@ -11,6 +11,7 @@ import {
   getRatingsForProduct,
 } from "@/app/actions/ratingActions";
 import RatingForm from "@/components/Products/RatingForm";
+import ProductCTABlock from "@/components/Products/ProductCTABlock";
 
 export default async function SingleProduct({ params }) {
   // get the session
@@ -35,7 +36,7 @@ export default async function SingleProduct({ params }) {
   //Product rating
   const avgRatingRes = await getAverageRating(product?._id?.toString() || id);
   const avgRating = avgRatingRes.success ? avgRatingRes.data : 0;
-  console.log({avgRatingRes})
+  console.log({ avgRatingRes });
 
   return (
     <section className="min-h-screen flex items-center justify-center py-10 px-5 text-white">
@@ -110,13 +111,13 @@ export default async function SingleProduct({ params }) {
           </div>
 
           {/* Stock Info */}
-          <p
+          {/* <p
             className={`mt-2 text-sm ${
               product.stock > 0 ? "text-green-400" : "text-red-400"
             }`}
           >
             {product.stock > 0 ? `In Stock: ${product.stock}` : "Out of Stock"}
-          </p>
+          </p> */}
 
           {/* Shipping */}
           {/* <div className="flex items-center gap-2 mt-3 text-sm text-gray-300">
@@ -143,15 +144,11 @@ export default async function SingleProduct({ params }) {
           </div> */}
 
           {/* Action Buttons */}
-          <div className="flex md:justify-end gap-4 mt-6">
-            <AddToCartBtn
-              // productId={`${product._id}`}
+          <div className="">
+            <ProductCTABlock
               product={JSON.stringify(product)}
               userEmail={session?.user?.email || ""}
             />
-            {/* <button className="flex-1 px-6 py-3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-md transition duration-300">
-              Buy Now
-            </button> */}
           </div>
 
           <div className="space-y-3 mt-6">

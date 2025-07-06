@@ -14,7 +14,8 @@ export const cartSlice = createSlice({
     },
     add: (state, { payload }) => {
       // Add a item in cart state
-      const existingIndex = state.items.findIndex(
+      // temporarily disabled
+      /* const existingIndex = state.items.findIndex(
         (item) => item.productId === payload.productId
       );
 
@@ -23,7 +24,8 @@ export const cartSlice = createSlice({
         state.items[existingIndex].quantity += payload.quantity;
       } else {
         state.items = [...state.items, payload];
-      }
+      } */
+        state.items = [...state.items, payload];
     },
     clear: (state) => {
       // clear entire cart state

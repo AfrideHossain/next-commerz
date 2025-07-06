@@ -8,9 +8,20 @@ export default function TabularProducts({ products }) {
   return (
     <div className="w-full">
       {!hasProducts && (
-        <div className="h-[60vh] flex items-center justify-center text-center text-lg text-gray-400">
-          No products found.
-        </div>
+        <>
+          <div className="h-[60vh] flex flex-col items-center justify-center gap-5">
+            <p className="text-center text-3xl text-gray-400">
+              No products found.
+            </p>
+            <Link
+              href="/admin/products/add"
+              className="btn btn-outline rounded-full flex items-center gap-2"
+            >
+              <LuPlus className="text-lg" />
+              Add New Product
+            </Link>
+          </div>
+        </>
       )}
 
       {hasProducts && (

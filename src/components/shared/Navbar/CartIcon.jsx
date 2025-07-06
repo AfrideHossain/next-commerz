@@ -56,7 +56,7 @@ export default function CartIcon() {
                     (acc, item) =>
                       acc + item.discountPrice ?? item.price * item.quantity,
                     0
-                  )}{" "}
+                  )}
                   Taka
                 </span>
               </>

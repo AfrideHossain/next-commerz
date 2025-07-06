@@ -93,7 +93,9 @@ export async function orderCheckout(formData) {
     const shipping_zip = formData.get("shipping_zip");
     const charges = JSON.parse(formData.get("charges"));
     const cart = JSON.parse(formData.get("cart"));
+    const vipPass = JSON.parse(formData.get("vipPass")) || false;
 
+    console.log({ vipPass });
     // generate unique id
     const orderId = generateOrderId();
     // order date
@@ -115,10 +117,13 @@ export async function orderCheckout(formData) {
     // );
     console.log("orderedProducts => ", orderProducts[0]);
     // calculate grand total
-    const total = orderProducts.reduce(
+    let total = orderProducts.reduce(
       (sum, item) => sum + item.price * item.quantity,
       0
     );
+    if (vipPass) {
+      total *= 0.95;
+    }
     const newOrder = new Order({
       userId: uid,
       orderId,

@@ -1,12 +1,13 @@
 "use server";
 
+import { auth } from "@/auth";
 import { connectToDb } from "@/lib/mongoConnection";
 import { User } from "@/models/user-model";
-// import { revalidatePath } from "next/cache";
+import { revalidatePath } from "next/cache";
 
 // Server action: Add to cart
-export async function addToCart({ userEmail, productId, quantity = 1 }) {
-  // console.log({ userEmail, productId, quantity });
+export async function addToCart({ userEmail, productId, size, quantity = 1 }) {
+  console.log({ userEmail, productId, quantity, size });
   try {
     // db connection
     // console.log("Connecting to the database...");
@@ -20,26 +21,22 @@ export async function addToCart({ userEmail, productId, quantity = 1 }) {
       .lean();
 
     if (!user) {
-      // console.log("user is not existed so i'm returned");
       return;
     }
-    // check if the product is already in the cart
-    // console.log("Checking if the product is already in the cart...");
+    /* // check if the product is already in the cart
     const existingProduct = user.cart.find(
       (item) => item.productId.toString() === productId
     );
     if (existingProduct) {
       // if product is already in cart then increase quantity
-      // console.log("Product is already in cart");
-      // console.log("Increasing product's quantity...");
       existingProduct.quantity += quantity;
     } else {
       // else push the product in the cart with defined quantity
-      // console.log("Product is not in the cart");
-      // console.log("Pushing product into the cart...");
       user.cart.push({ productId, quantity });
       // console.log("Product pushed into the cart.");
-    }
+    } */
+    user.cart.push({ productId, quantity, size });
+    console.log("From add to cart server action: ", user.cart);
 
     // update user and return
     await User.updateOne({ email: userEmail }, { $set: { cart: user.cart } });
@@ -80,6 +77,7 @@ export async function getCart(userEmail) {
       name: item.productId.name,
       discountPrice: item.productId.discountPrice,
       price: item.productId.price,
+      size: item.size,
       quantity: item.quantity,
     }));
 
@@ -202,5 +200,32 @@ export async function removeFromCart({ userEmail, productId }) {
   } catch (error) {
     // console.error("Error in removeFromCart:", error);
     return { success: false, message: "Something went wrong." };
+  }
+}
+
+// remove all items from cart
+export async function removeAllFromCart(userEmail) {
+  if (!userEmail) {
+    throw new Error("You should log in first");
+    // return;
+  }
+
+  try {
+    const clearUserCart = await User.findOneAndUpdate(
+      { email: userEmail },
+      {
+        $set: {
+          cart: [],
+        },
+      }
+    );
+    if (clearUserCart) {
+      // revalidatePath("/cart");
+      return { success: true, message: "Removed all items from cart" };
+    } else {
+      return { success: false, message: "Removed all items from cart" };
+    }
+  } catch (error) {
+    console.log("error from clearCart server action: ", error);
   }
 }

@@ -19,7 +19,7 @@ export async function getUserById(id) {
     await connectToDb();
 
     const user = await User.findById(id)
-      .select("name email image address phone nid role createdAt") // Expose only necessary fields
+      .select("name email image address phone vipPass nid role createdAt") // Expose only necessary fields
       .lean();
 
     return user

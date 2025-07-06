@@ -19,8 +19,8 @@ const transporter = nodemailer.createTransport({
     minVersion: "TLSv1.2", // Enforce TLS 1.2 or higher
     rejectUnauthorized: true, // Reject invalid certificates
   },
-  logger: true, // Optional: Enable logging for debugging
-  debug: true, // Optional: Show debug output
+  // logger: true, // Optional: Enable logging for debugging
+  // debug: true, // Optional: Show debug output
 });
 
 // reset mail sender function

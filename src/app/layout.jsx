@@ -9,6 +9,7 @@ import { SessionProvider } from "next-auth/react";
 import { getCart } from "./actions/cartActions";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import Footer from "@/components/shared/Footer/Footer";
+import Analytics from "@/components/shared/Analytics/Analytics";
 
 const jost = Jost({
   subsets: ["latin"],
@@ -59,6 +60,8 @@ export default async function RootLayout({ children }) {
           theme="dark"
           transition={Flip}
         />
+        {/* google analytics */}
+        <Analytics />
       </body>
     </html>
   );

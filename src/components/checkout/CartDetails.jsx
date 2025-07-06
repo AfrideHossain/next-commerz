@@ -4,7 +4,7 @@ import { useAppSelector } from "@/lib/redux/hooks/reduxHooks";
 import { formatPrice } from "@/utils/utils";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 
-export default function CartDetails() {
+export default function CartDetails({ user }) {
   // get full cart from redux
   const cartInformation = useAppSelector((state) => state.cart.items);
   // console.log(cartInformation);
@@ -12,7 +12,7 @@ export default function CartDetails() {
     let itemPrice = item.discountPrice ?? item.price;
     return acc + itemPrice * item.quantity;
   }, 0);
-  const shippingCharge = 120;
+  const shippingCharge = 0;
   return (
     <div className="p-4 bg-base-300 rounded-md divide-y divide-base-100">
       {cartInformation.map((item) => {
@@ -39,6 +39,12 @@ export default function CartDetails() {
           <p className="uppercase font-semibold">Sub total: </p>{" "}
           <p className="">{formatPrice(subtotal)} Taka</p>
         </div>
+        {user?.vipPass && (
+          <div className="flex justify-between">
+            <p className="uppercase font-semibold">VIP Customer Discount: </p>{" "}
+            <p className=""> - {formatPrice(5)} %</p>
+          </div>
+        )}
         <div className="flex justify-between">
           <p className="uppercase font-semibold">Delivery Charge: </p>{" "}
           <p className="">{formatPrice(shippingCharge)} Taka</p>
@@ -47,7 +53,13 @@ export default function CartDetails() {
       <div className="px-4 py-2">
         <div className="flex justify-between">
           <p className="uppercase font-semibold">Total: </p>{" "}
-          <p className="">{formatPrice(subtotal + shippingCharge)} Taka</p>
+          {user?.vipPass ? (
+            <p className="">
+              {formatPrice(subtotal * 0.95 + shippingCharge)} Taka
+            </p>
+          ) : (
+            <p className="">{formatPrice(subtotal + shippingCharge)} Taka</p>
+          )}
         </div>
       </div>
     </div>

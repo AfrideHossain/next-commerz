@@ -75,7 +75,7 @@ export default function ProductsLayout({ children }) {
       {/* Overlay for mobile */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-40 z-30 md:hidden"
+          className="fixed inset-0 bg-black/20 bg-opacity-40 z-30 md:hidden"
           onClick={() => setIsSidebarOpen(false)}
         ></div>
       )}
@@ -83,7 +83,6 @@ export default function ProductsLayout({ children }) {
       {/* Main Content */}
       <main className="flex-1 p-4 md:p-6 z-10">
         <div className="flex items-center justify-between mb-6">
-          
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             className="md:hidden p-2 bg-gray-700 rounded-md text-white"

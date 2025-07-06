@@ -27,7 +27,7 @@ export default function MyProfileLayout({ children }) {
         {/* Overlay for mobile */}
         {isSidebarOpen && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-40 z-30 md:hidden"
+            className="fixed inset-0 bg-black/20 bg-opacity-40 z-30 md:hidden"
             onClick={() => setIsSidebarOpen(false)}
           ></div>
         )}

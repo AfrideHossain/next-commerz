@@ -8,6 +8,7 @@ import { LuPencil } from "react-icons/lu";
 export default async function MyProfile() {
   const session = await auth();
   const response = await getUserById(session?.user.id);
+  console.log(response);
   return (
     <>
       {/* Profile wrapper */}
@@ -39,6 +40,19 @@ export default async function MyProfile() {
                 Verified
               </span>
             </p> */}
+            {response?.user?.vipPass && (
+              <div className="px-4 py-2 bg-neutral w-fit rounded-lg flex items-center gap-4">
+                <div className="relative w-12 h-12">
+                  <Image
+                    src={"/assets/icons/vip-badge.png"}
+                    fill
+                    sizes="400px"
+                    alt="Vip badge"
+                  />
+                </div>
+                <p className="text-xl font-bold">VIP Customer</p>
+              </div>
+            )}
           </div>
           <div>
             <Link
